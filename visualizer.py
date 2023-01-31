@@ -123,6 +123,7 @@ class Visualizer(QtWidgets.QMainWindow):
         self.stack_label.setText(self.blang.stack.get_full_stack_string())
 
     def update_matrw(self):
+        self.matrw_tablewidget.clear()
         self.blang.data.update_matrw_mat()
         self.matrw_tablewidget.setColumnCount(self.blang.data.matrw_cols)
         self.matrw_tablewidget.setRowCount(self.blang.data.matrw_rows)

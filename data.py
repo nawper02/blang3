@@ -1,4 +1,5 @@
 from datetime import date
+import numpy as np
 
 
 class Data:
@@ -16,9 +17,17 @@ class Data:
         self.macros = {
             "example macro": "non implemented test macro"
         }
+
+        self.matrw_rows = 3
+        self.matrw_cols = 3
+        self.matrw_mat = np.zeros((self.matrw_rows, self.matrw_cols), dtype=float)
+
         today = date.today()
         init_str = today.strftime("%b-%d-%Y")
         self.log = [f"BLANG v2.0.0 -- {init_str}"]
+
+    def update_matrw_mat(self):
+        self.matrw_mat = np.zeros((self.matrw_rows, self.matrw_cols), dtype=float)
 
     def define_var(self, name: str, value):
         self.vars[name] = value

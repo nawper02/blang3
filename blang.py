@@ -8,11 +8,15 @@ from parser import Parser
 from interpreter import Interpreter
 from visualizer import Visualizer
 
-# TODO: Fully implement QT -- matrw - make own class (just to instantiate inside visualizer)?
+# TODO: Fully implement QT
+# TODO: Make matrw rows and cols scale to fit in window until a certain point at which scroll is enabled?
+# TODO: make matrw clear on done
 # TODO: Fill in commands
 # TODO: add more functionality to macrowriter -- control flow? args?
 # TODO: Catch up to old version
 # TODO: Add units functionality using new strings functionality
+# TODO: Make macro label a macro browser where you can expand/open and edit macros
+# TODO: Make var label a var browser where you can edit / remove values
 
 # OLD TODOS:
 """

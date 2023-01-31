@@ -1,6 +1,6 @@
 from PyQt6 import QtWidgets, uic
 from PyQt6.QtWidgets import QApplication, QTableWidget, QTableWidgetItem, QWidget
-
+from stack_object import StackObject
 
 class Visualizer(QtWidgets.QMainWindow):
     def __init__(self, blang, *args):
@@ -57,8 +57,8 @@ class Visualizer(QtWidgets.QMainWindow):
         self.matrw_tablewidget.cellChanged.connect(self.handle_matrw_tablewidget_cell_changed)
 
         # set up tablewidget
-        self.matrw_tablewidget.setColumnCount(3)
-        self.matrw_tablewidget.setRowCount(3)
+        self.matrw_tablewidget.setColumnCount(self.blang.data.matrw_cols)
+        self.matrw_tablewidget.setRowCount(self.blang.data.matrw_rows)
 
         # set initial labels
         self.update_all()
@@ -86,20 +86,29 @@ class Visualizer(QtWidgets.QMainWindow):
         self.update_all()
 
     def handle_matrw_done_button(self):
-        assert "not implemented"
+        # Bypass parser because stackobject can be created directly from matrix
+        stack_object = StackObject(self.blang.data.matrw_mat)
+        self.blang.stack.auto_push(stack_object)
         self.update_all()
 
     def handle_matrw_rows_spinbox(self):
-        assert "not implemented"
+        self.blang.data.matrw_rows = self.matrw_rows_spinbox.value()
         self.update_all()
 
     def handle_matrw_cols_spinbox(self):
-        assert "not implemented"
+        self.blang.data.matrw_cols = self.matrw_cols_spinbox.value()
         self.update_all()
 
     def handle_matrw_tablewidget_cell_changed(self):
-        assert "not implemented"
-        self.update_all()
+        row = self.matrw_tablewidget.currentRow()
+        col = self.matrw_tablewidget.currentColumn()
+        try:
+            value = float(self.matrw_tablewidget.item(row, col).text())
+            self.blang.data.matrw_mat[row, col] = value
+        except ValueError:
+            pass
+        except UnboundLocalError:
+            pass
 
     def update_log(self):
         self.log_scrollarea_label.setText(self.blang.data.get_log_string())
@@ -113,8 +122,14 @@ class Visualizer(QtWidgets.QMainWindow):
     def update_stack(self):
         self.stack_label.setText(self.blang.stack.get_full_stack_string())
 
+    def update_matrw(self):
+        self.blang.data.update_matrw_mat()
+        self.matrw_tablewidget.setColumnCount(self.blang.data.matrw_cols)
+        self.matrw_tablewidget.setRowCount(self.blang.data.matrw_rows)
+
     def update_all(self):
         self.update_log()
         self.update_varw()
         self.update_macrw()
         self.update_stack()
+        self.update_matrw()

@@ -10,10 +10,10 @@ from visualizer import Visualizer
 
 # TODO: Fully implement QT
 # TODO: Make matrw rows and cols scale to fit in window until a certain point at which scroll is enabled?
-# TODO: Fill in commands
-# TODO: dissalow overwrite builtins with customs macro names
+# TODO: Fill in commands -- sqrt broken
 # TODO: add more functionality to macrowriter -- control flow? args?
-# TODO: Catch up to old version
+# TODO: Catch up to old version in misc features
+# TODO: Add stats functionality -- distributions, etc
 # TODO: Add units functionality using new strings functionality
 # TODO: Make macro label a macro browser where you can expand/open and edit macros
 # TODO: Make var label a var browser where you can edit / remove values

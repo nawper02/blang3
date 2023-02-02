@@ -18,6 +18,12 @@ class Data:
             "example macro": "non implemented test macro"
         }
 
+        self.reserved_words = \
+            ["", "POP", "ADD", "SUB", "X", "DIV", "SQRT", "SQ", "LN", "LBY", "SIN", "SIND", "COS", "COSD", "TAN",
+                "TAND", "ASIN", "ASIND", "ACOS", "ACOSD", "ATAN", "ATAND", "CHS", "REC", "EXP", "HYP", "XRY", "XTY",
+                "DOT", "NORM", "CROSS", "SWAP", "DUP", "DET", "INV", "TRANS", "SOLVE", "SUM", "C", "V", "CLEAR",
+                "VAR", "HELP"]
+
         self.matrw_rows = 3
         self.matrw_cols = 3
         self.matrw_mat = np.zeros((self.matrw_rows, self.matrw_cols), dtype=float)
@@ -33,6 +39,9 @@ class Data:
         self.vars[name] = value
 
     def define_macro(self, name: str, value: str):
+        print(name)
+        if name.upper() in self.reserved_words:
+            self.log.append("WARN: Macro name assigned to reserved word -- execution will not be possible")
         self.macros[name] = value
 
     def get_log_string(self):

@@ -1,4 +1,5 @@
 import re
+import numpy as np
 
 
 class CommandHandler:
@@ -185,6 +186,8 @@ class CommandHandler:
             case "HELP":
                 self.help(args)
 
+            # Remember to add to reserved keywords when making new commands!
+
             case _:
                 if command in self.data.macros.keys():
                     self.execute_macro([command])
@@ -194,6 +197,37 @@ class CommandHandler:
             x = self.stack.popval()
             y = self.stack.popval()
             self.stack_handler.handle_token(x + y)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def sub(self, args):
+        try:
+            x = self.stack.popval()
+            y = self.stack.popval()
+            self.stack_handler.handle_token(y - x)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def times(self, args):
+        try:
+            x = self.stack.popval()
+            y = self.stack.popval()
+            self.stack_handler.handle_token(y * x)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def div(self, args):
+        try:
+            x = self.stack.popval()
+            y = self.stack.popval()
+            self.stack_handler.handle_token(y / x)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def sqrt(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(np.sqrt(x))
         except Exception as e:
             self.data.log.append(str(e))
 

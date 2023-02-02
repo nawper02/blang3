@@ -98,16 +98,17 @@ class Parser:
                 return False
 
     @staticmethod
-    def is_list(token):
-        # if token is an actual list
-        if type(token) == np.ndarray or type(token) == list:
-            return True
-        # if token is a string that can be interpreted as a list
-        else:
+    def is_list(token, check_value=True, check_string=True):
+        if check_string:
             try:
                 pattern = re.compile(r"^\[(.*)\]$", re.IGNORECASE)
                 return pattern.match(token)
             except TypeError:
+                return False
+        if check_value:
+            if type(token) == np.ndarray or type(token) == list:
+                return True
+            else:
                 return False
 
     @staticmethod
@@ -146,46 +147,31 @@ class Parser:
             return False
 
     # Gets value of a token or string (if it can be interpreted as a value or string)
-    def get_value_or_string(self, token):
+    def get_value(self, token, allow_string_value=False):
 
         # If the token is a floating point number
         if self.is_number(token):
             # Return token interpreted as a float
             return float(token)
 
-        # If the token is a list
-        elif self.is_list(token):
+        # If the token is a list in string form
+        elif self.is_list(token, check_value=False):
             # Return token interpreted as a python list
             return np.array(ast.literal_eval(token))
+
+        # This is a hack to get around malformed node or string in ast.literal_eval
+        # If token is actually a list already
+        elif self.is_list(token, check_string=False):
+            # Return the token without changing it
+            return token
 
         # If the token is a var
         elif token in self.data.vars.keys():
             # Return value associated with token
             return self.data.vars[token]
 
-        elif self.is_string(token):
+        elif self.is_string(token) and allow_string_value:
             return self.get_string(token)
-
-        else:
-            return None
-
-    # Gets value of a token (if it can be interpreted as a value)
-    def get_value(self, token):
-
-        # If the token is a floating point number
-        if self.is_number(token):
-            # Return token interpreted as a float
-            return float(token)
-
-        # If the token is a list
-        elif self.is_list(token):
-            # Return token interpreted as a python list
-            return np.array(ast.literal_eval(token))
-
-        # If the token is a var
-        elif token in self.data.vars.keys():
-            # Return value associated with token
-            return self.data.vars[token]
 
         else:
             return None

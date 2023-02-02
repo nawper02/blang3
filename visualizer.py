@@ -2,6 +2,7 @@ from PyQt6 import QtWidgets, uic
 from PyQt6.QtWidgets import QApplication, QTableWidget, QTableWidgetItem, QWidget, QHeaderView
 from stack_object import StackObject
 
+
 class Visualizer(QtWidgets.QMainWindow):
     def __init__(self, blang, *args):
         super(Visualizer, self).__init__()
@@ -71,7 +72,7 @@ class Visualizer(QtWidgets.QMainWindow):
 
     def handle_varw_done_button(self):
         name = self.varw_name_lineedit.text()
-        value = self.blang.parser.get_value_or_string(self.varw_value_lineedit.text())
+        value = self.blang.parser.get_value(self.varw_value_lineedit.text(), allow_string_value=True)
         self.varw_name_lineedit.clear()
         self.varw_value_lineedit.clear()
         self.blang.interpreter.command_handler.define_var([name, value])

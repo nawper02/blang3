@@ -8,6 +8,6 @@ class StackHandler:
         self.parser = parser
 
     def handle_token(self, token):
-        value = self.parser.get_value_or_string(token)
+        value = self.parser.get_value(token, allow_string_value=True)
         stack_object = StackObject(value)
         self.stack.auto_push(stack_object)

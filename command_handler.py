@@ -189,6 +189,14 @@ class CommandHandler:
                 if command in self.data.macros.keys():
                     self.execute_macro([command])
 
+    def add(self, args):
+        try:
+            x = self.stack.popval()
+            y = self.stack.popval()
+            self.stack_handler.handle_token(x + y)
+        except Exception as e:
+            self.data.log.append(str(e))
+
     def dup(self, args):
         try:
             self.stack.stack_list.append(self.stack.stack_list[0])

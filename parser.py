@@ -87,7 +87,7 @@ class Parser:
     @staticmethod
     def is_number(token):
         # if token is an actual float
-        if type(token) == float:
+        if type(token) == float or type(token) == int:
             return True
         # if token is a string that can be interpreted as a float
         else:

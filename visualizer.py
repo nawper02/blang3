@@ -1,5 +1,5 @@
 from PyQt6 import QtWidgets, uic
-from PyQt6.QtWidgets import QApplication, QTableWidget, QTableWidgetItem, QWidget
+from PyQt6.QtWidgets import QApplication, QTableWidget, QTableWidgetItem, QWidget, QHeaderView
 from stack_object import StackObject
 
 class Visualizer(QtWidgets.QMainWindow):

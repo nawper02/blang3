@@ -2,7 +2,8 @@ from stack_object import StackObject
 
 
 class Stack:
-    def __init__(self):
+    def __init__(self, data):
+        self.data = data
         self.stack_list = []
 
     def __str__(self):
@@ -12,7 +13,13 @@ class Stack:
         try:
             self.stack_list.append(stack_object)
         except Exception as e:
-            print(str(e))
+            self.data.log.append(str(e))
+
+    def popval(self):
+        try:
+            return self.stack_list.pop().value
+        except Exception as e:
+            self.data.log.append(str(e))
 
     def clear(self):
         self.stack_list.clear()

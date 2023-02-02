@@ -10,7 +10,7 @@ from visualizer import Visualizer
 
 # TODO: Fully implement QT
 # TODO: Make matrw rows and cols scale to fit in window until a certain point at which scroll is enabled?
-# TODO: make matrw clear on done
+# TODO: fix malformed node or string
 # TODO: Fill in commands
 # TODO: add more functionality to macrowriter -- control flow? args?
 # TODO: Catch up to old version
@@ -42,8 +42,8 @@ from visualizer import Visualizer
 
 class Blang:
     def __init__(self):
-        self.stack = Stack()
         self.data = Data()
+        self.stack = Stack(self.data)
         self.parser = Parser(self.stack, self.data)
         self.interpreter = Interpreter(self.stack, self.data, self.parser)
 

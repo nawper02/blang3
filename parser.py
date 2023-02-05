@@ -87,7 +87,7 @@ class Parser:
     @staticmethod
     def is_number(token):
         # if token is an actual float
-        if type(token) == float or type(token) == int:
+        if type(token) in (float, int, np.float64):
             return True
         # if token is a string that can be interpreted as a float
         else:
@@ -106,7 +106,7 @@ class Parser:
             except TypeError:
                 return False
         if check_value:
-            if type(token) == np.ndarray or type(token) == list:
+            if type(token) in (list, np.ndarray):
                 return True
             else:
                 return False

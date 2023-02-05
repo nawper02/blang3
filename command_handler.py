@@ -177,11 +177,20 @@ class CommandHandler:
             case "V":
                 self.paste(args)
 
+            case "EQUALS":
+                self.equals(args)
+
+            case "NEQUALS":
+                self.nequals(args)
+
             case "CLEAR":
                 self.clear(args)
 
             case "VAR":
                 self.define_var(args)
+
+            case "VARIND":
+                self.define_var_from_index(args)
 
             case "HELP":
                 self.help(args)
@@ -231,6 +240,13 @@ class CommandHandler:
         except Exception as e:
             self.data.log.append(str(e))
 
+    def sq(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(x * x)
+        except Exception as e:
+            self.data.log.append(str(e))
+
     def dup(self, args):
         try:
             self.stack.stack_list.append(self.stack.stack_list[0])
@@ -265,11 +281,36 @@ class CommandHandler:
         except Exception as e:
             self.data.log.append(str(e))
 
+    def define_var_from_index(self, args):
+        try:
+            name = args[0]
+            index = int(args[1])
+            value = self.stack.stack_list[index].value
+            self.data.define_var(name, value)
+        except Exception as e:
+            self.data.log.append(str(e))
+
     def define_macro(self, args):
         try:
             name = args[0]
             value = args[1]
             self.data.define_macro(name, value)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def equals(self, args):
+        try:
+            value1 = args[0]
+            value2 = args[1]
+            self.stack_handler.handle_token(int(value1 == value2))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def nequals(self, args):
+        try:
+            value1 = args[0]
+            value2 = args[1]
+            self.stack_handler.handle_token(int(value1 != value2))
         except Exception as e:
             self.data.log.append(str(e))
 

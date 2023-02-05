@@ -8,25 +8,24 @@ from parser import Parser
 from interpreter import Interpreter
 from visualizer import Visualizer
 
-# TODO: Fully implement QT
 # TODO: Make matrw rows and cols scale to fit in window until a certain point at which scroll is enabled?
-# TODO: Fill in commands -- sqrt broken
-# TODO: add more functionality to macrowriter -- control flow? args?
+# TODO: Fill in commands
+# TODO: add more functionality to macrowriter -- control flow, args
 # TODO: Catch up to old version in misc features
 # TODO: Add stats functionality -- distributions, etc
 # TODO: Add units functionality using new strings functionality
 # TODO: Make macro label a macro browser where you can expand/open and edit macros
 # TODO: Make var label a var browser where you can edit / remove values
+# TODO: Make var label display matrices correctly
+# TODO: Fix growing spaces in list (.sq repeat on list make spaces grow)
+# TODO: Make data load from a json
 
 # OLD TODOS:
 """
 # ADD #
-# TODO: FINISH MATRW: more visual improvement?
-# TODO:             --> Add safety for types in stack with arrays
-# TODO:             --> add functions to do on arrays! dot product, etc
+# TODO: add more functions in general
 # TODO: remove stupid stuff from units?
 # TODO: Make units tab with categories?
-# TODO: add more functions/methods to function definitions / execution
 # TODO: conversions -- dtr(deg to rad), rtd(rad to deg), ctpd(cartesian to polar), ctsd(cartesian to spherical),
 # TODO:                ctcd(cartesian to cylindrical) and other way for all as well as xxxr for radians.
 

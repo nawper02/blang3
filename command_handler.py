@@ -1,4 +1,5 @@
 import re
+import math
 import numpy as np
 
 
@@ -132,9 +133,6 @@ class CommandHandler:
             case "EXP":
                 self.exp(args)
 
-            case "HYP":
-                self.hyp(args)
-
             case "XRY":
                 self.xry(args)
 
@@ -192,6 +190,30 @@ class CommandHandler:
             case "VARIND":
                 self.define_var_from_index(args)
 
+            case "PGRMVAR":
+                self.define_pgrm_var(args)
+
+            case "PGRMVARIND":
+                self.define_pgrm_var_from_index(args)
+
+            case "GETPGRMVAR":
+                self.get_pgrm_var(args)
+
+            case "CLEARVARS":
+                self.clear_vars(args)
+
+            case "CLEARPGRMVARS":
+                self.clear_pgrm_vars(args)
+
+            case "CLEARMACROS":
+                self.clear_macros(args)
+
+            case "CLEARLOG":
+                self.clear_log(args)
+
+            case "CLEARALLDATA":
+                self.clear_all_data(args)
+
             case "HELP":
                 self.help(args)
 
@@ -247,6 +269,129 @@ class CommandHandler:
         except Exception as e:
             self.data.log.append(str(e))
 
+    def ln(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(math.log(x))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def lby(self, args):
+        try:
+            x = self.stack.popval()
+            y = self.stack.popval()
+            self.stack_handler.handle_token(math.log(x, y))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def sin(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(math.sin(x))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def sind(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(math.sin(math.radians(x)))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def cos(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(math.cos(x))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def cosd(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(math.cos(math.radians(x)))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def tan(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(math.tan(x))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def tand(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(math.tan(math.radians(x)))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def asin(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(math.asin(x))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def asind(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(math.degrees(math.asin(x)))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def acos(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(math.acos(x))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def acosd(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(math.degrees(math.acos(x)))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def atan(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(math.atan(x))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def atand(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(math.degrees(math.atan(x)))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def chs(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(-x)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def rec(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(1.0/x)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def exp(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(math.exp(x))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+
+
+
     def dup(self, args):
         try:
             self.stack.stack_list.append(self.stack.stack_list[0])
@@ -287,6 +432,61 @@ class CommandHandler:
             index = int(args[1])
             value = self.stack.stack_list[index].value
             self.data.define_var(name, value)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def define_pgrm_var(self, args):
+        try:
+            name = args[0]
+            value = args[1]
+            self.data.define_pgrm_var(name, value)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def define_pgrm_var_from_index(self, args):
+        try:
+            name = args[0]
+            index = int(args[1])
+            value = self.stack.stack_list[index].value
+            self.data.define_pgrm_var(name, value)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def get_pgrm_var(self, args):
+        try:
+            name = args[0]
+            value = self.data.get_pgrm_var(name)
+            self.stack_handler.handle_token(value)
+        except Exception as e:
+            self.data.log.append("KeyError: " + str(e))
+
+    def clear_vars(self, args):
+        try:
+            self.data.clear_vars()
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def clear_pgrm_vars(self, args):
+        try:
+            self.data.clear_pgrm_vars()
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def clear_macros(self, args):
+        try:
+            self.data.clear_macros()
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def clear_log(self, args):
+        try:
+            self.data.clear_log()
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def clear_all_data(self, args):
+        try:
+            self.data.clear_all_data()
         except Exception as e:
             self.data.log.append(str(e))
 

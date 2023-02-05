@@ -14,8 +14,11 @@ class Data:
             "me": 9.1093837e-31,
             "ce": -1.602e-19
         }
+
+        self.pgrm_vars = {}
+
         self.macros = {
-            "example macro": "non implemented test macro"
+            "hyp": ".pgrmvarind('y' 1)\n.pgrmvarind('x' 0)\n.clear\n.getpgrmvar('x')\n.sq\n.getpgrmvar('y')\n.sq\n.add\n.sqrt\n.clearpgrmvars"
         }
 
         self.reserved_words = \
@@ -35,14 +38,20 @@ class Data:
     def update_matrw_mat(self):
         self.matrw_mat = np.zeros((self.matrw_rows, self.matrw_cols), dtype=float)
 
-    def define_var(self, name: str, value):
-        self.vars[name] = value
-
     def define_macro(self, name: str, value: str):
         print(name)
         if name.upper() in self.reserved_words:
             self.log.append("WARN: Macro name assigned to reserved word -- execution will not be possible")
         self.macros[name] = value
+
+    def define_var(self, name: str, value):
+        self.vars[name] = value
+
+    def define_pgrm_var(self, name: str, value):
+        self.pgrm_vars[name] = value
+
+    def get_pgrm_var(self, name):
+        return self.pgrm_vars[name]
 
     def get_log_string(self):
         log_string = ""
@@ -70,3 +79,21 @@ class Data:
         for line in range(25 - len(self.macros)):
             macrw_string += "\n"
         return macrw_string
+
+    def clear_pgrm_vars(self):
+        self.pgrm_vars.clear()
+
+    def clear_vars(self):
+        self.vars.clear()
+
+    def clear_log(self):
+        self.log.clear()
+
+    def clear_macros(self):
+        self.macros.clear()
+
+    def clear_all_data(self):
+        self.clear_pgrm_vars()
+        self.clear_vars()
+        self.clear_log()
+        self.clear_macros()

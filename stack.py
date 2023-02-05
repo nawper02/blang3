@@ -5,6 +5,7 @@ class Stack:
     def __init__(self, data):
         self.data = data
         self.stack_list = []
+        self.clipboard = StackObject(888)
 
     def __str__(self):
         return str(self.stack_list)
@@ -21,8 +22,20 @@ class Stack:
         except Exception as e:
             self.data.log.append(str(e))
 
+    def sum_stack(self):
+        try:
+            return sum([x.value for x in self.stack_list])
+        except Exception as e:
+            self.data.log.append(str(e))
+
     def clear(self):
         self.stack_list.clear()
+
+    def copy(self):
+        self.clipboard = self.stack_list[-1]
+
+    def paste(self):
+        self.stack_list.append(self.clipboard)
 
     def get_full_stack_string(self):
         stack_string = ""

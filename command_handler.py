@@ -392,8 +392,102 @@ class CommandHandler:
         except Exception as e:
             self.data.log.append(str(e))
 
+    def xry(self, args):
+        try:
+            x = self.stack.popval()
+            y = self.stack.popval()
+            self.stack_handler.handle_token(pow(y, 1.0/x))
+        except Exception as e:
+            self.data.log.append(str(e))
 
+    def xty(self, args):
+        try:
+            x = self.stack.popval()
+            y = self.stack.popval()
+            self.stack_handler.handle_token(pow(x, y))
+        except Exception as e:
+            self.data.log.append(str(e))
 
+    def dot(self, args):
+        try:
+            x = self.stack.popval()
+            y = self.stack.popval()
+            self.stack_handler.handle_token(np.dot(x, y))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def norm(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(np.linalg.norm(x))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def cross(self, args):
+        try:
+            x = self.stack.popval()
+            y = self.stack.popval()
+            self.stack_handler.handle_token(np.cross(x, y))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def swap(self, args):
+        try:
+            x = self.stack.popval()
+            y = self.stack.popval()
+            self.stack_handler.handle_token(x)
+            self.stack_handler.handle_token(y)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def det(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(np.linalg.det(x))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def inv(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(np.linalg.inv(x))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def transpose(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(np.transpose(x))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def solve(self, args):
+        try:
+            x = self.stack.popval()
+            y = self.stack.popval()
+            self.stack_handler.handle_token(np.linalg.solve(x, y))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def sum_stack(self, args):
+        try:
+            value = self.stack.sum_stack()
+            self.stack.clear()
+            self.stack_handler.handle_token(value)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def copy(self, args):
+        try:
+            self.stack.copy()
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def paste(self, args):
+        try:
+            self.stack.paste()
+        except Exception as e:
+            self.data.log.append(str(e))
 
     def dup(self, args):
         try:

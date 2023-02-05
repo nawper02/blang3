@@ -6,11 +6,7 @@ class StackObject:
         self.value = value
 
     def __str__(self):
-        if type(self.value) == float:
-            return str(self.value)
-        elif type(self.value) == str:
-            return str(self.value)
-        elif type(self.value) == list:
+        if type(self.value) in (float, int, str, list):
             return str(self.value)
         elif type(self.value) == np.ndarray:
             if len(self.value.shape) == 1:

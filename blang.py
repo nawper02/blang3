@@ -8,9 +8,9 @@ from parser import Parser
 from interpreter import Interpreter
 from visualizer import Visualizer
 
-# TODO: Make matrw rows and cols scale to fit in window until a certain point at which scroll is enabled?
-# TODO: Fill in commands
+# TODO: make dot, norm, and cross work
 # TODO: add more functionality to macrowriter -- control flow, args
+# TODO: add more functions like teq - tgt, tlt, etc
 # TODO: Catch up to old version in misc features
 # TODO: Add stats functionality -- distributions, etc
 # TODO: Add units functionality using new strings functionality
@@ -20,6 +20,8 @@ from visualizer import Visualizer
 # TODO: Fix growing spaces in list (.sq repeat on list make spaces grow)
 # TODO: Make data load/save from a json
 # TODO: Update reserved keywords
+# TODO: Make matrw rows and cols scale to fit in window until a certain point at which scroll is enabled?
+
 
 # OLD TODOS:
 """

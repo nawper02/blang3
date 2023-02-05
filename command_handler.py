@@ -175,11 +175,11 @@ class CommandHandler:
             case "V":
                 self.paste(args)
 
-            case "EQUALS":
-                self.equals(args)
+            case "TEQ":
+                self.teq(args)
 
-            case "NEQUALS":
-                self.nequals(args)
+            case "TNE":
+                self.tne(args)
 
             case "CLEAR":
                 self.clear(args)
@@ -190,20 +190,23 @@ class CommandHandler:
             case "VARIND":
                 self.define_var_from_index(args)
 
-            case "PGRMVAR":
-                self.define_pgrm_var(args)
+            case "PVAR":
+                self.define_pvar(args)
 
-            case "PGRMVARIND":
-                self.define_pgrm_var_from_index(args)
+            case "PVARIND":
+                self.define_pvar_from_index(args)
 
-            case "GETPGRMVAR":
-                self.get_pgrm_var(args)
+            case "GETPVAR":
+                self.get_pvar(args)
+
+            case "RM":
+                self.rm(args)
 
             case "CLEARVARS":
                 self.clear_vars(args)
 
-            case "CLEARPGRMVARS":
-                self.clear_pgrm_vars(args)
+            case "CLEARPVARS":
+                self.clear_pvars(args)
 
             case "CLEARMACROS":
                 self.clear_macros(args)
@@ -435,28 +438,36 @@ class CommandHandler:
         except Exception as e:
             self.data.log.append(str(e))
 
-    def define_pgrm_var(self, args):
+    def define_pvar(self, args):
         try:
             name = args[0]
             value = args[1]
-            self.data.define_pgrm_var(name, value)
+            self.data.define_pvar(name, value)
         except Exception as e:
             self.data.log.append(str(e))
 
-    def define_pgrm_var_from_index(self, args):
+    def define_pvar_from_index(self, args):
         try:
             name = args[0]
             index = int(args[1])
             value = self.stack.stack_list[index].value
-            self.data.define_pgrm_var(name, value)
+            self.data.define_pvar(name, value)
         except Exception as e:
             self.data.log.append(str(e))
 
-    def get_pgrm_var(self, args):
+    def get_pvar(self, args):
         try:
             name = args[0]
-            value = self.data.get_pgrm_var(name)
+            value = self.data.get_pvar(name)
             self.stack_handler.handle_token(value)
+        except Exception as e:
+            self.data.log.append("KeyError: " + str(e))
+
+    def rm(self, args):
+        try:
+            data_type = args[0]
+            name = args[1]
+            self.data.rm(data_type, name)
         except Exception as e:
             self.data.log.append("KeyError: " + str(e))
 
@@ -466,9 +477,9 @@ class CommandHandler:
         except Exception as e:
             self.data.log.append(str(e))
 
-    def clear_pgrm_vars(self, args):
+    def clear_pvars(self, args):
         try:
-            self.data.clear_pgrm_vars()
+            self.data.clear_pvars()
         except Exception as e:
             self.data.log.append(str(e))
 
@@ -498,7 +509,7 @@ class CommandHandler:
         except Exception as e:
             self.data.log.append(str(e))
 
-    def equals(self, args):
+    def teq(self, args):
         try:
             value1 = args[0]
             value2 = args[1]
@@ -506,7 +517,7 @@ class CommandHandler:
         except Exception as e:
             self.data.log.append(str(e))
 
-    def nequals(self, args):
+    def tne(self, args):
         try:
             value1 = args[0]
             value2 = args[1]

@@ -15,10 +15,10 @@ class Data:
             "ce": -1.602e-19
         }
 
-        self.pgrm_vars = {}
+        self.pvars = {}
 
         self.macros = {
-            "hyp": ".pgrmvarind('y' 1)\n.pgrmvarind('x' 0)\n.clear\n.getpgrmvar('x')\n.sq\n.getpgrmvar('y')\n.sq\n.add\n.sqrt\n.clearpgrmvars"
+            "hyp": ".pvarind('y' 1)\n.pvarind('x' 0)\n.clear\n.getpvar('x')\n.sq\n.getpvar('y')\n.sq\n.add\n.sqrt\n.rm('pvars' 'x')\n.rm('pvars' 'y')",
         }
 
         self.reserved_words = \
@@ -35,6 +35,8 @@ class Data:
         init_str = today.strftime("%b-%d-%Y")
         self.log = [f"BLANG v2.0.0 -- {init_str}"]
 
+        self.dictionaries = {"vars": self.vars, "pvars": self.pvars, "macros": self.macros}
+
     def update_matrw_mat(self):
         self.matrw_mat = np.zeros((self.matrw_rows, self.matrw_cols), dtype=float)
 
@@ -47,11 +49,11 @@ class Data:
     def define_var(self, name: str, value):
         self.vars[name] = value
 
-    def define_pgrm_var(self, name: str, value):
-        self.pgrm_vars[name] = value
+    def define_pvar(self, name: str, value):
+        self.pvars[name] = value
 
-    def get_pgrm_var(self, name):
-        return self.pgrm_vars[name]
+    def get_pvar(self, name):
+        return self.pvars[name]
 
     def get_log_string(self):
         log_string = ""
@@ -80,8 +82,11 @@ class Data:
             macrw_string += "\n"
         return macrw_string
 
-    def clear_pgrm_vars(self):
-        self.pgrm_vars.clear()
+    def rm(self, data_type, name):
+        self.dictionaries[data_type].pop(name)
+
+    def clear_pvars(self):
+        self.pvars.clear()
 
     def clear_vars(self):
         self.vars.clear()
@@ -93,7 +98,7 @@ class Data:
         self.macros.clear()
 
     def clear_all_data(self):
-        self.clear_pgrm_vars()
+        self.clear_pvars()
         self.clear_vars()
         self.clear_log()
         self.clear_macros()

@@ -19,6 +19,7 @@ from visualizer import Visualizer
 # TODO: Make var label display matrices correctly
 # TODO: Fix growing spaces in list (.sq repeat on list make spaces grow)
 # TODO: Make data load/save from a json
+# TODO: Update reserved keywords
 
 # OLD TODOS:
 """

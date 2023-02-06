@@ -412,14 +412,14 @@ class CommandHandler:
         try:
             x = self.stack.popval()
             y = self.stack.popval()
-            self.stack_handler.handle_token(np.dot(x, y))
+            self.stack_handler.handle_token(float(np.dot(x, y)))
         except Exception as e:
             self.data.log.append(str(e))
 
     def norm(self, args):
         try:
             x = self.stack.popval()
-            self.stack_handler.handle_token(np.linalg.norm(x))
+            self.stack_handler.handle_token(x / np.linalg.norm(x))
         except Exception as e:
             self.data.log.append(str(e))
 

@@ -8,8 +8,7 @@ from parser import Parser
 from interpreter import Interpreter
 from visualizer import Visualizer
 
-# TODO: make dot, norm, and cross work
-# TODO: add more functionality to macrowriter -- control flow, args
+# TODO: add more functionality to macrowriter -- control flow, args -- maybe tokenize each like even if only one token?
 # TODO: add more functions like teq - tgt, tlt, etc
 # TODO: Catch up to old version in misc features
 # TODO: Add stats functionality -- distributions, etc

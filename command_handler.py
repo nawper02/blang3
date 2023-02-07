@@ -181,6 +181,20 @@ class CommandHandler:
             case "TNE":
                 self.tne(args)
 
+            case "TGT":
+                self.tgt(args)
+
+            case "TGT":
+                self.tlt(args)
+
+            case "TGE":
+                self.tge(args)
+
+            case "TLE":
+                self.tle(args)
+
+            #case "IF":
+
             case "CLEAR":
                 self.clear(args)
 
@@ -618,6 +632,39 @@ class CommandHandler:
             self.stack_handler.handle_token(int(value1 != value2))
         except Exception as e:
             self.data.log.append(str(e))
+
+    def tgt(self, args):
+        try:
+            value1 = args[0]
+            value2 = args[1]
+            self.stack_handler.handle_token(int(value1 > value2))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def tlt(self, args):
+        try:
+            value1 = args[0]
+            value2 = args[1]
+            self.stack_handler.handle_token(int(value1 < value2))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def tge(self, args):
+        try:
+            value1 = args[0]
+            value2 = args[1]
+            self.stack_handler.handle_token(int(value1 >= value2))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def tle(self, args):
+        try:
+            value1 = args[0]
+            value2 = args[1]
+            self.stack_handler.handle_token(int(value1 <= value2))
+        except Exception as e:
+            self.data.log.append(str(e))
+
 
     @staticmethod
     def help(args: list):

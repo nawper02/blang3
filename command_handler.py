@@ -184,7 +184,7 @@ class CommandHandler:
             case "TGT":
                 self.tgt(args)
 
-            case "TGT":
+            case "TLT":
                 self.tlt(args)
 
             case "TGE":
@@ -664,7 +664,6 @@ class CommandHandler:
             self.stack_handler.handle_token(int(value1 <= value2))
         except Exception as e:
             self.data.log.append(str(e))
-
 
     @staticmethod
     def help(args: list):

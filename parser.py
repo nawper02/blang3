@@ -52,9 +52,13 @@ class Parser:
         tokens = list(filter(lambda x: x.strip(), tokens))
         return tokens
 
-    @staticmethod
-    def tokenize_macro(s: str):
-        tokens = s.split("\n")
+    def tokenize_macro(self, s: str):
+        lines = s.split("\n")
+
+        tokens = []
+        for line in lines:
+            tokens += self.tokenize(line)
+
         return tokens
 
     @staticmethod

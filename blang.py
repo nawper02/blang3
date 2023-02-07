@@ -8,8 +8,7 @@ from parser import Parser
 from interpreter import Interpreter
 from visualizer import Visualizer
 
-# TODO: add more functionality to macrowriter -- control flow, args -- maybe tokenize each like even if only one token?
-# TODO: add more functions like teq - tgt, tlt, etc
+# TODO: add more functionality to macrowriter -- control flow, args -- macro class?
 # TODO: Catch up to old version in misc features
 # TODO: Add stats functionality -- distributions, etc
 # TODO: Add units functionality using new strings functionality

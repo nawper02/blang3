@@ -198,6 +198,9 @@ class CommandHandler:
             case "CLEAR":
                 self.clear(args)
 
+            case "RETURN":
+                self.ret(args)
+
             case "VAR":
                 self.define_var(args)
 
@@ -239,6 +242,8 @@ class CommandHandler:
             case _:
                 if command in self.data.macros.keys():
                     self.execute_macro([command])
+                    # TODO: When functions are implemented, this is where it will be done.
+                    #       it will be execute_function(command, args)
 
     def add(self, args):
         try:
@@ -526,6 +531,14 @@ class CommandHandler:
             key = args[0]
             macro = self.data.macros[key]
             self.interpreter.interpret_tokens(self.parser.tokenize_macro(macro))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def ret(self, args):
+        try:
+            val = self.stack.stack_list[-1]
+            self.stack.clear()
+            self.stack.stack_list.append(val)
         except Exception as e:
             self.data.log.append(str(e))
 

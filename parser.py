@@ -61,6 +61,13 @@ class Parser:
 
         return tokens
 
+    def tokenize_bfunction(self, s: list):
+        tokens = []
+        for line in s:
+            tokens += self.tokenize(line)
+
+        return tokens
+
     @staticmethod
     def find_outermost_block(s: str, left_char: str, right_char: str):
         # Function that takes a string and finds the outermost block specified by the left and right characters

@@ -1,5 +1,6 @@
 from datetime import date
 import numpy as np
+from bfunction import BFunction
 
 
 class Data:
@@ -20,6 +21,7 @@ class Data:
         self.macros = {
             "hyp": ".pvarind('y' 1)\n.pvarind('x' 0)\n.clear\n.getpvar('x')\n.sq\n.getpvar('y')\n.sq\n.add\n.sqrt\n.rm('pvars' 'x')\n.rm('pvars' 'y')",
         }
+        self.bfunctions = {}
 
         self.reserved_words = \
             ["", "POP", "ADD", "SUB", "X", "DIV", "SQRT", "SQ", "LN", "LBY", "SIN", "SIND", "COS", "COSD", "TAN",
@@ -40,11 +42,17 @@ class Data:
     def update_matrw_mat(self):
         self.matrw_mat = np.zeros((self.matrw_rows, self.matrw_cols), dtype=float)
 
+    # Soon to be deprecated
     def define_macro(self, name: str, value: str):
         print(name)
         if name.upper() in self.reserved_words:
             self.log.append("WARN: Macro name assigned to reserved word -- execution will not be possible")
         self.macros[name] = value
+
+    def define_bfunction(self, bfunction: BFunction):
+        if bfunction.name.upper() in self.reserved_words:
+            self.log.append("WARN: BFunction name assigned to reserved word -- execution will not be possible")
+        self.bfunctions[bfunction.name] = bfunction
 
     def define_var(self, name: str, value):
         self.vars[name] = value
@@ -81,6 +89,17 @@ class Data:
         for line in range(25 - len(self.macros)):
             macrw_string += "\n"
         return macrw_string
+
+    def get_bfuncrw_string(self):
+        bfuncrw_string = ""
+        for entry in self.bfunctions:
+            bfuncrw_string += f"{entry}({self.bfunctions[entry].get_pretty_args()})\n"
+            for line in self.bfunctions[entry].pgrm_lines:
+                bfuncrw_string += f"    {line}\n"
+            bfuncrw_string += "\n"
+        for line in range(25 - len(self.bfunctions)):
+            bfuncrw_string += "\n"
+        return bfuncrw_string
 
     def rm(self, data_type, name):
         self.dictionaries[data_type].pop(name)

@@ -307,11 +307,11 @@
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="macrw_tab">
+    <widget class="QWidget" name="fnwrtr_tab">
      <attribute name="title">
-      <string> MACRW </string>
+      <string> FNWRTR </string>
      </attribute>
-     <widget class="QGroupBox" name="macrw_groupbox">
+     <widget class="QGroupBox" name="fnwrtr_groupbox">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -323,7 +323,7 @@
       <property name="title">
        <string/>
       </property>
-      <widget class="QScrollArea" name="macrw_writer_scrollarea">
+      <widget class="QScrollArea" name="fnwrtr_writer_scrollarea">
        <property name="geometry">
         <rect>
          <x>340</x>
@@ -335,7 +335,7 @@
        <property name="widgetResizable">
         <bool>true</bool>
        </property>
-       <widget class="QWidget" name="macrw_writer_scrollarea_contents">
+       <widget class="QWidget" name="function_writer_scrollarea_contents">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -346,12 +346,12 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <widget class="QPlainTextEdit" name="macrw_textedit"/>
+          <widget class="QPlainTextEdit" name="fnwrtr_textedit"/>
          </item>
         </layout>
        </widget>
       </widget>
-      <widget class="QPushButton" name="macrw_done_button">
+      <widget class="QPushButton" name="fnwrtr_done_button">
        <property name="geometry">
         <rect>
          <x>610</x>
@@ -369,7 +369,7 @@
         <string>✓</string>
        </property>
       </widget>
-      <widget class="QScrollArea" name="macro_writer_scrollarea_2">
+      <widget class="QScrollArea" name="function_writer_scrollarea_2">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -381,7 +381,7 @@
        <property name="widgetResizable">
         <bool>true</bool>
        </property>
-       <widget class="QWidget" name="macro_scrollarea_contents_2">
+       <widget class="QWidget" name="function_scrollarea_contents_2">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -392,7 +392,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_7">
          <item>
-          <widget class="QLabel" name="macrw_current_macros_label">
+          <widget class="QLabel" name="fnwrtr_current_macros_label">
            <property name="font">
             <font>
              <family>.AppleSystemUIFontMonospaced</family>
@@ -405,40 +405,6 @@
          </item>
         </layout>
        </widget>
-      </widget>
-      <widget class="QLabel" name="macrw_name_label">
-       <property name="geometry">
-        <rect>
-         <x>350</x>
-         <y>455</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>.AppleSystemUIFontMonospaced</family>
-         <weight>75</weight>
-         <italic>true</italic>
-         <bold>true</bold>
-         <underline>false</underline>
-         <strikeout>false</strikeout>
-         <kerning>true</kerning>
-        </font>
-       </property>
-       <property name="text">
-        <string>Name:</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="macrw_name_lineedit">
-       <property name="geometry">
-        <rect>
-         <x>410</x>
-         <y>455</y>
-         <width>181</width>
-         <height>21</height>
-        </rect>
-       </property>
       </widget>
      </widget>
     </widget>

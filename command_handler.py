@@ -1,6 +1,7 @@
 import re
 import math
 import numpy as np
+from bfunction import BFunction
 
 
 class CommandHandler:
@@ -240,10 +241,8 @@ class CommandHandler:
             # Remember to add to reserved keywords when making new commands!
 
             case _:
-                if command in self.data.macros.keys():
-                    self.execute_macro([command])
-                    # TODO: When functions are implemented, this is where it will be done.
-                    #       it will be execute_function(command, args)
+                if command in self.data.bfunctions.keys():
+                    self.execute_bfunction(command, args)
 
     def add(self, args):
         try:
@@ -526,11 +525,10 @@ class CommandHandler:
         except Exception as e:
             self.data.log.append(str(e))
 
-    def execute_macro(self, args):
+    def execute_bfunction(self, name, args):
         try:
-            key = args[0]
-            macro = self.data.macros[key]
-            self.interpreter.interpret_tokens(self.parser.tokenize_macro(macro))
+            bfunction = self.data.bfunctions[name]
+            self.interpreter.interpret_tokens(self.parser.tokenize_bfunction(bfunction, args))
         except Exception as e:
             self.data.log.append(str(e))
 
@@ -622,11 +620,10 @@ class CommandHandler:
         except Exception as e:
             self.data.log.append(str(e))
 
-    def define_macro(self, args):
+    def define_bfunction(self, body):
         try:
-            name = args[0]
-            value = args[1]
-            self.data.define_macro(name, value)
+            bfunction = BFunction(body)
+            self.data.define_bfunction(bfunction)
         except Exception as e:
             self.data.log.append(str(e))
 

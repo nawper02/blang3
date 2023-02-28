@@ -38,10 +38,9 @@ class Visualizer(QtWidgets.QMainWindow):
         self.varw_current_vars_label = self.findChild(QtWidgets.QLabel, 'varw_current_vars_label')
         self.varw_name_lineedit = self.findChild(QtWidgets.QLineEdit, 'varw_name_lineedit')
         self.varw_value_lineedit = self.findChild(QtWidgets.QLineEdit, 'varw_value_lineedit')
-        self.macrw_current_macros_label = self.findChild(QtWidgets.QLabel, 'macrw_current_macros_label')
-        self.macrw_done_button = self.findChild(QtWidgets.QPushButton, 'macrw_done_button')
-        self.macrw_textedit = self.findChild(QtWidgets.QPlainTextEdit, 'macrw_textedit')
-        self.macrw_name_lineedit = self.findChild(QtWidgets.QLineEdit, 'macrw_name_lineedit')
+        self.fnwrtr_current_macros_label = self.findChild(QtWidgets.QLabel, 'fnwrtr_current_macros_label')
+        self.fnwrtr_done_button = self.findChild(QtWidgets.QPushButton, 'fnwrtr_done_button')
+        self.fnwrtr_textedit = self.findChild(QtWidgets.QPlainTextEdit, 'fnwrtr_textedit')
         self.matrw_cols_spinbox = self.findChild(QtWidgets.QSpinBox, 'matrw_cols_spinbox')
         self.matrw_rows_spinbox = self.findChild(QtWidgets.QSpinBox, 'matrw_rows_spinbox')
         self.matrw_done_button = self.findChild(QtWidgets.QPushButton, 'matrw_done_button')
@@ -51,7 +50,7 @@ class Visualizer(QtWidgets.QMainWindow):
         # connect functionality
         self.input.returnPressed.connect(self.handle_input)
         self.varw_done_button.clicked.connect(self.handle_varw_done_button)
-        self.macrw_done_button.clicked.connect(self.handle_macrw_done_button)
+        self.fnwrtr_done_button.clicked.connect(self.handle_fnwrtr_done_button)
         self.matrw_done_button.clicked.connect(self.handle_matrw_done_button)
         self.matrw_rows_spinbox.valueChanged.connect(self.handle_matrw_rows_spinbox)
         self.matrw_cols_spinbox.valueChanged.connect(self.handle_matrw_cols_spinbox)
@@ -78,12 +77,10 @@ class Visualizer(QtWidgets.QMainWindow):
         self.blang.interpreter.command_handler.define_var([name, value])
         self.update_all()
 
-    def handle_macrw_done_button(self):
-        name = self.macrw_name_lineedit.text()
-        value = self.macrw_textedit.toPlainText()
-        self.macrw_name_lineedit.clear()
-        self.macrw_textedit.clear()
-        self.blang.interpreter.command_handler.define_macro([name, value])
+    def handle_fnwrtr_done_button(self):
+        body = self.fnwrtr_textedit.toPlainText()
+        self.fnwrtr_textedit.clear()
+        self.blang.interpreter.command_handler.define_bfunction(body)
         self.update_all()
 
     def handle_matrw_done_button(self):
@@ -117,8 +114,9 @@ class Visualizer(QtWidgets.QMainWindow):
     def update_varw(self):
         self.varw_current_vars_label.setText(self.blang.data.get_var_string())
 
-    def update_macrw(self):
-        self.macrw_current_macros_label.setText(self.blang.data.get_macrw_string())
+    def update_fnwrtr(self):
+        # DEPRECATED
+        self.fnwrtr_current_macros_label.setText(self.blang.data.get_bfuncrw_string())
 
     def update_stack(self):
         self.stack_label.setText(self.blang.stack.get_full_stack_string())
@@ -132,6 +130,6 @@ class Visualizer(QtWidgets.QMainWindow):
     def update_all(self):
         self.update_log()
         self.update_varw()
-        self.update_macrw()
+        self.update_fnwrtr()
         self.update_stack()
         self.update_matrw()

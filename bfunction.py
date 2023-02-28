@@ -15,12 +15,10 @@ Example function:
 
 """
 import re
-from parser import Parser
 
 
-# Temporarily, BFunction does some of the work that the parser should do
 class BFunction:
-    def __init__(self, body: str, parser: Parser):
+    def __init__(self, body: str):
         # Split text body (from macrw) into lines
         self.lines = body.split('\n')
         # Get the first line (the header)
@@ -29,7 +27,6 @@ class BFunction:
         self.name, self.args = self.get_name_and_args()
         # Get the rest of the lines (the program)
         self.pgrm_lines = self.lines[1:]
-        self.parser = parser
 
     def get_name_and_args(self):
         # Extract name and args from token
@@ -46,7 +43,5 @@ class BFunction:
         args = args_string.split(" ")
         return name, args
 
-    def tokenize_from_inputs(self, inputs: list):
-        tokens = self.parser.tokenize_bfunction(self.pgrm_lines)
-
-        return tokens
+    def get_pretty_args(self):
+        return ", ".join(self.args)

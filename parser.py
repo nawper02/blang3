@@ -1,6 +1,7 @@
 import re
 import ast
 import numpy as np
+from bfunction import BFunction
 
 
 class Parser:
@@ -61,10 +62,14 @@ class Parser:
 
         return tokens
 
-    def tokenize_bfunction(self, s: list):
+    def tokenize_bfunction(self, f: BFunction, inputs: list):
         tokens = []
-        for line in s:
+        for line in f.pgrm_lines:
             tokens += self.tokenize(line)
+
+        for index, token in enumerate(tokens): # For each token
+            if token in f.args: # If token is an arg
+                tokens[index] = inputs[f.args.index(token)] # Replace arg with input
 
         return tokens
 

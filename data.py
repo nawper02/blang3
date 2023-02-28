@@ -18,10 +18,9 @@ class Data:
 
         self.pvars = {}
 
-        self.macros = {
-            "hyp": ".pvarind('y' 1)\n.pvarind('x' 0)\n.clear\n.getpvar('x')\n.sq\n.getpvar('y')\n.sq\n.add\n.sqrt\n.rm('pvars' 'x')\n.rm('pvars' 'y')",
-        }
+        example_bfunction = BFunction(".hyp(a b)\na .sq b .sq .add .sqrt")
         self.bfunctions = {}
+        self.bfunctions[example_bfunction.name] = example_bfunction
 
         self.reserved_words = \
             ["", "POP", "ADD", "SUB", "X", "DIV", "SQRT", "SQ", "LN", "LBY", "SIN", "SIND", "COS", "COSD", "TAN",
@@ -37,17 +36,10 @@ class Data:
         init_str = today.strftime("%b-%d-%Y")
         self.log = [f"BLANG v2.0.0 -- {init_str}"]
 
-        self.dictionaries = {"vars": self.vars, "pvars": self.pvars, "macros": self.macros}
+        self.dictionaries = {"vars": self.vars, "pvars": self.pvars, "bfunctions": self.bfunctions}
 
     def update_matrw_mat(self):
         self.matrw_mat = np.zeros((self.matrw_rows, self.matrw_cols), dtype=float)
-
-    # Soon to be deprecated
-    def define_macro(self, name: str, value: str):
-        print(name)
-        if name.upper() in self.reserved_words:
-            self.log.append("WARN: Macro name assigned to reserved word -- execution will not be possible")
-        self.macros[name] = value
 
     def define_bfunction(self, bfunction: BFunction):
         if bfunction.name.upper() in self.reserved_words:
@@ -79,17 +71,6 @@ class Data:
             vars_string += "\n"
         return vars_string
 
-    def get_macrw_string(self):
-        macrw_string = ""
-        for entry in self.macros:
-            macrw_string += f"{entry}\n"
-            for line in self.macros[entry].split("\n"):
-                macrw_string += f"    {line}\n"
-            macrw_string += "\n"
-        for line in range(25 - len(self.macros)):
-            macrw_string += "\n"
-        return macrw_string
-
     def get_bfuncrw_string(self):
         bfuncrw_string = ""
         for entry in self.bfunctions:
@@ -113,11 +94,11 @@ class Data:
     def clear_log(self):
         self.log.clear()
 
-    def clear_macros(self):
-        self.macros.clear()
+    def clear_bfunctions(self):
+        self.bfunctions.clear()
 
     def clear_all_data(self):
         self.clear_pvars()
         self.clear_vars()
         self.clear_log()
-        self.clear_macros()
+        self.clear_bfunctions()

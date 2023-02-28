@@ -392,7 +392,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_7">
          <item>
-          <widget class="QLabel" name="fnwrtr_current_macros_label">
+          <widget class="QLabel" name="fnwrtr_current_functions_label">
            <property name="font">
             <font>
              <family>.AppleSystemUIFontMonospaced</family>

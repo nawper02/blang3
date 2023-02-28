@@ -9,7 +9,7 @@ from interpreter import Interpreter
 from visualizer import Visualizer
 
 # TODO: add more functionality to FNWRTR -- control flow, args
-# TODO: Change all macrw names to fnwrtr
+# TODO: remove pvar stuff?
 # TODO: Catch up to old version in misc features
 # TODO: Add stats functionality -- distributions, etc
 # TODO: Add units functionality using new strings functionality

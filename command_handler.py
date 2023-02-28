@@ -226,8 +226,8 @@ class CommandHandler:
             case "CLEARPVARS":
                 self.clear_pvars(args)
 
-            case "CLEARMACROS":
-                self.clear_macros(args)
+            case "CLEARBFUNCTIONS":
+                self.clear_bfunctions(args)
 
             case "CLEARLOG":
                 self.clear_log(args)
@@ -602,9 +602,9 @@ class CommandHandler:
         except Exception as e:
             self.data.log.append(str(e))
 
-    def clear_macros(self, args):
+    def clear_bfunctions(self, args):
         try:
-            self.data.clear_macros()
+            self.data.clear_bfunctions()
         except Exception as e:
             self.data.log.append(str(e))
 

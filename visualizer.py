@@ -38,7 +38,7 @@ class Visualizer(QtWidgets.QMainWindow):
         self.varw_current_vars_label = self.findChild(QtWidgets.QLabel, 'varw_current_vars_label')
         self.varw_name_lineedit = self.findChild(QtWidgets.QLineEdit, 'varw_name_lineedit')
         self.varw_value_lineedit = self.findChild(QtWidgets.QLineEdit, 'varw_value_lineedit')
-        self.fnwrtr_current_macros_label = self.findChild(QtWidgets.QLabel, 'fnwrtr_current_macros_label')
+        self.fnwrtr_current_functions_label = self.findChild(QtWidgets.QLabel, 'fnwrtr_current_functions_label')
         self.fnwrtr_done_button = self.findChild(QtWidgets.QPushButton, 'fnwrtr_done_button')
         self.fnwrtr_textedit = self.findChild(QtWidgets.QPlainTextEdit, 'fnwrtr_textedit')
         self.matrw_cols_spinbox = self.findChild(QtWidgets.QSpinBox, 'matrw_cols_spinbox')
@@ -116,7 +116,7 @@ class Visualizer(QtWidgets.QMainWindow):
 
     def update_fnwrtr(self):
         # DEPRECATED
-        self.fnwrtr_current_macros_label.setText(self.blang.data.get_bfuncrw_string())
+        self.fnwrtr_current_functions_label.setText(self.blang.data.get_bfuncrw_string())
 
     def update_stack(self):
         self.stack_label.setText(self.blang.stack.get_full_stack_string())

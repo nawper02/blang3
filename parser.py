@@ -53,15 +53,6 @@ class Parser:
         tokens = list(filter(lambda x: x.strip(), tokens))
         return tokens
 
-    def tokenize_macro(self, s: str):
-        lines = s.split("\n")
-
-        tokens = []
-        for line in lines:
-            tokens += self.tokenize(line)
-
-        return tokens
-
     def tokenize_bfunction(self, f: BFunction, inputs: list):
         tokens = []
         for line in f.pgrm_lines:

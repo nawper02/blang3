@@ -9,10 +9,10 @@ from interpreter import Interpreter
 from visualizer import Visualizer
 
 # TODO: Catch up to old version in misc features -- units
-# TODO: make quadrature work
+# TODO: fix any size matrw (0 0 makes invisible stack object lol)
 # TODO: Add stats functionality -- distributions, etc
 # TODO: Add units functionality using new strings functionality
-# TODO: Make macro label a macro browser where you can expand/open and edit macros
+# TODO: Make macro label a function browser where you can expand/open and edit functions
 # TODO: Make var label a var browser where you can edit / remove values
 # TODO: Make var label display matrices correctly
 # TODO: Fix growing spaces in list (.sq repeat on list make spaces grow)
@@ -21,6 +21,7 @@ from visualizer import Visualizer
 # TODO: Make matrw rows and cols scale to fit in window until a certain point at which scroll is enabled?
 # TODO: make the docs
 # TODO: Make log give basic useful information other than errors
+# TODO: make quadrature work, implement secant root finding
 
 # TODO: NO CONTROL FLOW AND ARGS FOR FNWRTR. no need. seperate project.
 

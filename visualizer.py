@@ -107,6 +107,8 @@ class Visualizer(QtWidgets.QMainWindow):
             pass
         except UnboundLocalError:
             pass
+        except AttributeError:
+            pass
 
     def update_log(self):
         self.log_scrollarea_label.setText(self.blang.data.get_log_string())

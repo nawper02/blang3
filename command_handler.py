@@ -618,7 +618,90 @@ class CommandHandler:
             self.data.log.append(str(e))
 
     def roots(self, args):
-        pass
+        # define interior differentiation functions
+        def bisection(command, a, b, tol=1e-6, maxits=1000):
+            # initial check
+            self.execute_command(command, [a])
+            fa = self.stack.ret()
+            self.execute_command(command, [b])
+            fb = self.stack.ret()
+            # if the initial limits do not bracket a root, raise an error
+            if fa * fb > 0:
+                raise Exception("Bad interval - 0 or 2+ roots")
+
+            # initialize an interation counter and tolerance checking boolean flag
+            tol_check = False
+            iteration = 0
+            while iteration < maxits:
+
+                # increment iteration
+                iteration += 1
+
+                # find midpoint of a and b
+                c = (b + a) / 2
+
+                # if not first loop
+                if iteration > 1:
+                    ea = abs((c - last_c) / c)
+                    # if tolerance has been met
+                    if (abs(b - a) / 2) < tol or abs(ea) < tol:
+                        tol_check = True
+                        break
+
+                # calls to the anonymous function to find the value of f(inputs) at these points
+                self.execute_command(command, [a])
+                fa = self.stack.ret()
+                self.execute_command(command, [c])
+                fc = self.stack.ret()
+
+                # adjust the boundaries depending on where the zero is (between a negative and a positive f(x) value)
+                if fa * fc > 0:
+                    a = c
+                else:
+                    b = c
+
+                last_c = c
+
+            # if no root found within tolerance and maximum number of iterations, raise an error
+            if not tol_check:
+                raise Exception("Root not found within tolerance and maximum number of iterations")
+
+            return c
+
+        def secant(command, x, tol=1e-6):
+            return None
+
+        try:
+            # assign args and hardcode type requirements
+
+            bfunc_string: str = args[0]
+            if not isinstance(bfunc_string, (str)):
+                raise TypeError("The 'bfunction_name' argument must be a string")
+
+            lower_guess: float = args[1]
+            if not isinstance(lower_guess, (int, float, np.float64)):
+                raise TypeError("The 'lower_bound' argument must be a number")
+
+            upper_guess: float = args[2]
+            if not isinstance(upper_guess, (int, float, np.float64)):
+                raise TypeError("The 'upper_bound' argument must be a number")
+
+            method_string = "BISECTION"  # hardcoded because secant is not implemented
+
+            # find root based on chosen method
+
+            match method_string.upper():
+                case "BISECTION":
+                    root = bisection(bfunc_string, lower_guess, upper_guess, tol=1e-6, maxits=1000)
+                    self.stack_handler.handle_token(root)
+                case "SECANT":
+                    root = secant(bfunc_string, 666, tol=1e-6)
+                    self.stack_handler.handle_token(root)
+                case _:
+                    raise ValueError(f"{method_string} is not a valid differentiation method")
+
+        except Exception as e:
+            self.data.log.append(str(e))
 
     def copy(self, args):
         try:

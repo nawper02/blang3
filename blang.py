@@ -8,9 +8,8 @@ from parser import Parser
 from interpreter import Interpreter
 from visualizer import Visualizer
 
-# TODO: add more functionality to FNWRTR -- control flow, args
-# TODO: remove pvar stuff?
-# TODO: Catch up to old version in misc features
+# TODO: Catch up to old version in misc features -- units
+# TODO: make quadrature work
 # TODO: Add stats functionality -- distributions, etc
 # TODO: Add units functionality using new strings functionality
 # TODO: Make macro label a macro browser where you can expand/open and edit macros
@@ -20,6 +19,11 @@ from visualizer import Visualizer
 # TODO: Make data load/save from a json
 # TODO: Update reserved keywords
 # TODO: Make matrw rows and cols scale to fit in window until a certain point at which scroll is enabled?
+# TODO: make the docs
+# TODO: Make log give basic useful information other than errors
+
+# TODO: NO CONTROL FLOW AND ARGS FOR FNWRTR. no need. seperate project.
+
 
 
 # OLD TODOS:

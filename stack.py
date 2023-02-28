@@ -10,6 +10,9 @@ class Stack:
     def __str__(self):
         return str(self.stack_list)
 
+    def ret(self):
+        return self.popval()
+
     def auto_push(self, stack_object: StackObject):
         try:
             self.stack_list.append(stack_object)

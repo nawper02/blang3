@@ -1,5 +1,6 @@
 import re
 import math
+
 import numpy as np
 from bfunction import BFunction
 
@@ -170,6 +171,15 @@ class CommandHandler:
             case "SUM":
                 self.sum_stack(args)
 
+            case "INT":
+                self.integrate(args)
+
+            case "DIF":
+                self.differentiate(args)
+
+            case "ROOTS":
+                self.roots(args)
+
             case "C":
                 self.copy(args)
 
@@ -193,8 +203,6 @@ class CommandHandler:
 
             case "TLE":
                 self.tle(args)
-
-            #case "IF":
 
             case "CLEAR":
                 self.clear(args)
@@ -494,6 +502,123 @@ class CommandHandler:
             self.stack_handler.handle_token(value)
         except Exception as e:
             self.data.log.append(str(e))
+
+    def integrate(self, args):
+        # define interior integration functions
+
+        def trapezoidal(command, x0, xf, n=1000):
+            h = (xf - x0) / n
+            x = np.linspace(x0, xf, n + 1)
+            y = np.zeros(len(x))
+            for index, element in enumerate(x):
+                self.execute_command(command, [element]) # element is a list because execute_command expects a list
+                y[index] = self.stack.ret()
+            return h * np.sum(y[:-1] + y[1:]) / 2
+
+        def quadrature(f, a, b, n=3):
+            raise Exception("Quadrature does not currently work.")
+            # cant remember what these are, been a while since numerical methods
+            o = (b - a) / 2
+            m = (b + a) / 2
+            # get x and w from n using numpy
+            x, w = np.polynomial.legendre.leggauss(n)
+            # evaluate the function at the points
+            vals = np.zeros(len(x))
+
+            for index, element in enumerate(x):
+                self.execute_command(f, [o * element + m])
+                vals[index] = sum(self.stack.ret() * w)
+
+            return o * np.sum(vals)
+
+        try:  # assign args and hardcode type requirements
+            bfunc_string: str = args[0]
+            if not isinstance(bfunc_string, (str)):
+                raise TypeError("The 'bfunction_name' argument must be a string")
+
+            lower_bound: float = args[1]
+            if not isinstance(lower_bound, (int, float, np.float64)):
+                raise TypeError("The 'lower_bound' argument must be a number")
+
+            upper_bound: float = args[2]
+            if not isinstance(upper_bound, (int, float, np.float64)):
+                raise TypeError("The 'upper_bound' argument must be a number")
+
+            if len(args) > 3:
+                method_string: str = args[3]
+                if not isinstance(method_string, (str)):
+                    raise TypeError("The 'method_string' argument must be a string")
+            else:
+                method_string = "TRAP"
+
+            # integrate based on chosen method
+            match method_string.upper():
+                case "TRAP":
+                    area = trapezoidal(bfunc_string, lower_bound, upper_bound, n = 1000)
+                    self.stack_handler.handle_token(area)
+                    # optional argument assignment can later be replaced with provided arguments from user
+                case "QUAD":
+                    area = quadrature(bfunc_string, lower_bound, upper_bound, n=3)
+                    self.stack_handler.handle_token(area)
+                case _:
+                    raise ValueError(f"{method_string} is not a valid integration method")
+
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def differentiate(self, args):
+        # define interior differentiation functions
+        def central_difference(command, x, h=1e-6):
+            self.execute_command(command, [x + h])
+            upper_val = self.stack.ret()
+            self.execute_command(command, [x - h])
+            lower_val = self.stack.ret()
+            return (upper_val - lower_val) / (2 * h)
+
+        def second_central_difference(command, x, h=1e-6):
+            self.execute_command(command, [x + h])
+            upper_val = self.stack.ret()
+            self.execute_command(command, [x - h])
+            lower_val = self.stack.ret()
+            self.execute_command(command, [x])
+            center_val = self.stack.ret()
+            return (upper_val - 2 * center_val + lower_val) / (h ** 2)
+
+        try:
+            # assign args and hardcode type requirements
+
+            bfunc_string: str = args[0]
+            if not isinstance(bfunc_string, (str)):
+                raise TypeError("The 'bfunction_name' argument must be a string")
+
+            x: float = args[1]
+            if not isinstance(x, (int, float, np.float64)):
+                raise TypeError("The 'lower_bound' argument must be a number")
+
+            if len(args) > 2:
+                method_string: str = args[2]
+                if not isinstance(method_string, (str)):
+                    raise TypeError("The 'method_string' argument must be a string")
+            else:
+                method_string = "CDIF"
+
+            # differentiate based on chosen method
+
+            match method_string.upper():
+                case "CDIF":
+                    slope = central_difference(bfunc_string, x, h=1e-6)
+                    self.stack_handler.handle_token(slope)
+                case "SECOND":
+                    slope = second_central_difference(bfunc_string, x, h=1e-6)
+                    self.stack_handler.handle_token(slope)
+                case _:
+                    raise ValueError(f"{method_string} is not a valid differentiation method")
+
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def roots(self, args):
+        pass
 
     def copy(self, args):
         try:

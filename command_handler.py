@@ -153,6 +153,12 @@ class CommandHandler:
             case "SWAP":
                 self.swap(args)
 
+            case "UP":
+                self.up(args)
+
+            case "DOWN":
+                self.down(args)
+
             case "DUP":
                 self.dup(args)
 
@@ -242,6 +248,18 @@ class CommandHandler:
 
             case "CLEARALLDATA":
                 self.clear_all_data(args)
+
+            case "IOTA":
+                self.iota(args)
+
+            case "UNPACK":
+                self.unpack(args)
+
+            case "PACK":
+                self.pack(args)
+
+            case "EYE":
+                self.eye(args)
 
             case "HELP":
                 self.help(args)
@@ -726,6 +744,20 @@ class CommandHandler:
         except Exception as e:
             self.data.log.append(str(e))
 
+    def up(self, args):
+        try:
+            self.stack.stack_list.append(self.stack.stack_list[0])
+            self.stack.stack_list.pop(0)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def down(self, args):
+        try:
+            self.stack.stack_list.insert(0, self.stack.stack_list[-1])
+            self.stack.stack_list.pop()
+        except Exception as e:
+            self.data.log.append(str(e))
+
     def pop(self, args):
         try:
             self.stack.stack_list.pop()
@@ -885,6 +917,38 @@ class CommandHandler:
             value1 = args[0]
             value2 = args[1]
             self.stack_handler.handle_token(int(value1 <= value2))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def iota(self, args):
+        try:
+            value = int(args[0])
+            self.stack_handler.handle_token(list(range(value)))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def pack(self, args):
+        try:
+            array = []
+            for item in self.stack.stack_list:
+                array.append(item.value)
+            self.stack.clear()
+            self.stack_handler.handle_token(array)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def unpack(self, args):
+        try:
+            array = self.stack.popval()
+            for value in array:
+                self.stack_handler.handle_token(value)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def eye(self, args):
+        try:
+            value = int(args[0])
+            self.stack_handler.handle_token(np.eye(value))
         except Exception as e:
             self.data.log.append(str(e))
 

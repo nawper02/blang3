@@ -494,6 +494,9 @@
              <family>Andale Mono</family>
             </font>
            </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::DefaultContextMenu</enum>
+           </property>
            <property name="headerHidden">
             <bool>true</bool>
            </property>
@@ -616,6 +619,15 @@
           <width>211</width>
           <height>31</height>
          </rect>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="editable">
+         <bool>false</bool>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
        </widget>
        <widget class="QPushButton" name="fnwrtr_done_button">

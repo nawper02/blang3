@@ -1,5 +1,5 @@
 from PyQt6 import QtWidgets, uic
-from PyQt6.QtWidgets import QApplication, QTableWidget, QTableWidgetItem, QWidget, QHeaderView, QListWidgetItem
+from PyQt6.QtGui import QKeySequence, QShortcut
 from stack_object import StackObject
 
 
@@ -7,6 +7,7 @@ class Visualizer(QtWidgets.QMainWindow):
     def __init__(self, blang, *args):
         super(Visualizer, self).__init__()
         uic.loadUi('/Users/kinblandford/PycharmProjects/blang/blang2_ui.ui', self)
+        downarrow_icon_path = "/Users/kinblandford/PycharmProjects/blang/downarrow.png"
 
         # set stuff up
         self.blang = blang
@@ -36,9 +37,6 @@ class Visualizer(QtWidgets.QMainWindow):
         }
         QComboBox {
             selection-background-color: rgb(90, 90, 90)
-        }
-        QComboBox::down-arrow {
-        
         }
         """
         )
@@ -79,7 +77,6 @@ class Visualizer(QtWidgets.QMainWindow):
         self.varw_current_vars_list.itemDoubleClicked.connect(self.handle_varw_current_vars_list_double_clicked)
 
         self.fnwrtr_done_button.clicked.connect(self.handle_fnwrtr_done_button)
-        #self.fnwrtr_combobox.currentTextChanged.connect(self.handle_fnwrtr_combobox_current_text_changed)
         self.fnwrtr_new_folder_done_button.clicked.connect(self.handle_fnwrtr_new_folder_done_button)
         self.fnwrtr_current_functions_tree.itemDoubleClicked.connect(self.handle_fnwrtr_current_functions_tree_double_clicked)
 
@@ -87,6 +84,26 @@ class Visualizer(QtWidgets.QMainWindow):
         self.matrw_rows_spinbox.valueChanged.connect(self.handle_matrw_rows_spinbox)
         self.matrw_cols_spinbox.valueChanged.connect(self.handle_matrw_cols_spinbox)
         self.matrw_tablewidget.cellChanged.connect(self.handle_matrw_tablewidget_cell_changed)
+
+        # create shortcuts for basic stack operations
+        self.stack_up_shortcut = QShortcut(QKeySequence("Up"), self)
+        self.stack_up_shortcut.activated.connect(self.handle_stack_up_shortcut)
+        self.stack_down_shortcut = QShortcut(QKeySequence("Down"), self)
+        self.stack_down_shortcut.activated.connect(self.handle_stack_down_shortcut)
+        self.stack_right_shortcut = QShortcut(QKeySequence("Right"), self)
+        self.stack_right_shortcut.activated.connect(self.handle_stack_right_shortcut)
+        self.stack_pop_shortcut = QShortcut(QKeySequence("Backspace"), self)
+        self.stack_pop_shortcut.activated.connect(self.handle_stack_pop_shortcut)
+        self.stack_multiply_shortcut = QShortcut(QKeySequence("*"), self)
+        self.stack_multiply_shortcut.activated.connect(self.handle_stack_multiply_shortcut)
+        self.stack_divide_shortcut = QShortcut(QKeySequence("/"), self)
+        self.stack_divide_shortcut.activated.connect(self.handle_stack_divide_shortcut)
+        self.stack_add_shortcut = QShortcut(QKeySequence("+"), self)
+        self.stack_add_shortcut.activated.connect(self.handle_stack_add_shortcut)
+        self.stack_subtract_shortcut = QShortcut(QKeySequence("-"), self)
+        self.stack_subtract_shortcut.activated.connect(self.handle_stack_subtract_shortcut)
+        self.stack_power_shortcut = QShortcut(QKeySequence("^"), self)
+        self.stack_power_shortcut.activated.connect(self.handle_stack_power_shortcut)
 
         # set up tablewidget
         self.matrw_tablewidget.setColumnCount(self.blang.data.matrw_cols)
@@ -99,6 +116,42 @@ class Visualizer(QtWidgets.QMainWindow):
         s = self.input.text()
         self.input.clear()
         self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize(s))
+        self.update_all()
+
+    def handle_stack_divide_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.div'))
+        self.update_all()
+
+    def handle_stack_up_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.up'))
+        self.update_all()
+
+    def handle_stack_down_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.down'))
+        self.update_all()
+
+    def handle_stack_pop_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.pop'))
+        self.update_all()
+
+    def handle_stack_multiply_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.x'))
+        self.update_all()
+
+    def handle_stack_add_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.add'))
+        self.update_all()
+
+    def handle_stack_subtract_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.sub'))
+        self.update_all()
+
+    def handle_stack_power_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.xty'))
+        self.update_all()
+
+    def handle_stack_right_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.swap'))
         self.update_all()
 
     def handle_varw_done_button(self):

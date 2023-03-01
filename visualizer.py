@@ -89,7 +89,7 @@ class Visualizer(QtWidgets.QMainWindow):
     def handle_varw_done_button(self):
         name = self.varw_name_lineedit.text()
         value = self.blang.parser.get_value(self.varw_value_lineedit.text(), allow_string_value=True)
-        if name is not None and value is not None:
+        if name not in (None, '') and value not in (None, ''):
             self.varw_name_lineedit.clear()
             self.varw_value_lineedit.clear()
             self.blang.interpreter.command_handler.define_var([name, value])
@@ -98,7 +98,7 @@ class Visualizer(QtWidgets.QMainWindow):
     def handle_varw_done_button_2(self):
         name = self.varw_name_lineedit_2.text()
         index = self.varw_index_lineedit.text()
-        if index is not None:
+        if name not in (None, '') and index not in (None, ''):
             self.blang.interpreter.command_handler.define_var_from_index([name, index])
             self.varw_index_lineedit.clear()
             self.varw_name_lineedit_2.clear()

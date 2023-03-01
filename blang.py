@@ -12,7 +12,6 @@ from visualizer import Visualizer
 # TODO: Add stats functionality -- distributions, etc
 # TODO: Add units functionality using new strings functionality
 # TODO: Make macro label a function browser where you can expand/open and edit functions
-# TODO: Make var label a var browser where you can edit / remove values
 # TODO: Make var label display matrices correctly
 # TODO: Fix growing spaces in list (.sq repeat on list make spaces grow)
 # TODO: Make data load/save from a json

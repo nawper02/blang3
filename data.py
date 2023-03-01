@@ -1,6 +1,7 @@
 from datetime import date
 import numpy as np
 from bfunction import BFunction
+from PyQt6.QtWidgets import QListWidgetItem
 
 
 class Data:
@@ -52,6 +53,9 @@ class Data:
     def define_pvar(self, name: str, value):
         self.pvars[name] = value
 
+    def get_var(self, name):
+        return self.vars[name]
+
     def get_pvar(self, name):
         return self.pvars[name]
 
@@ -63,6 +67,7 @@ class Data:
             log_string += "\n"
         return log_string
 
+    # DEPRECATED
     def get_var_string(self):
         vars_string = ""
         for entry in self.vars:
@@ -70,6 +75,12 @@ class Data:
         for line in range(27 - len(self.vars)):
             vars_string += "\n"
         return vars_string
+
+    def get_var_listwidget_items(self):
+        var_listwidget_items = []
+        for entry in self.vars:
+            var_listwidget_items.append(QListWidgetItem(f"{entry} = {self.vars[entry]}"))
+        return var_listwidget_items
 
     def get_bfuncrw_string(self):
         bfuncrw_string = ""

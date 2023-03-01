@@ -12,7 +12,7 @@ class Parser:
     # Method to turn string input into list of usable tokens
     # Doesn't split up things we don't want to split up, like lists strings or args
     @staticmethod
-    def tokenize(s: str):
+    def tokenize(s: str, bfunction=None, inputs=None):
         # if the entire string is just an empty string, return it so commandhandler can catch it and call dup
         if s == "":
             return [s]
@@ -37,6 +37,17 @@ class Parser:
         # Split the string on spaces
         tokens = s.split(" ")
 
+        # Dear god this is ugly
+        # If you are reading this, I am sorry
+        if inputs is not None and bfunction is not None:
+            new_arg_matches = []
+            for arg_match in arg_matches:
+                for arg in arg_match.strip("()").split(" "):
+                    if arg in bfunction.args:
+                        arg_match = arg_match.replace(arg, str(inputs[bfunction.args.index(arg)]))
+                new_arg_matches.append(arg_match)
+            arg_matches = new_arg_matches
+
         # Replace the special character with the original substring
         for i in range(len(tokens)):
 
@@ -56,7 +67,7 @@ class Parser:
     def tokenize_bfunction(self, f: BFunction, inputs: list):
         tokens = []
         for line in f.pgrm_lines:
-            tokens += self.tokenize(line)
+            tokens += self.tokenize(line, bfunction=f, inputs=inputs)
 
         for index, token in enumerate(tokens): # For each token
             if token in f.args: # If token is an arg

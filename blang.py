@@ -9,7 +9,6 @@ from interpreter import Interpreter
 from visualizer import Visualizer
 
 # TODO: Catch up to old version in misc features -- units
-# TODO: fix any size matrw (0 0 makes invisible stack object lol)
 # TODO: Add stats functionality -- distributions, etc
 # TODO: Add units functionality using new strings functionality
 # TODO: Make macro label a function browser where you can expand/open and edit functions

@@ -1,12 +1,12 @@
 from PyQt6 import QtWidgets, uic
-from PyQt6.QtWidgets import QApplication, QTableWidget, QTableWidgetItem, QWidget, QHeaderView
+from PyQt6.QtWidgets import QApplication, QTableWidget, QTableWidgetItem, QWidget, QHeaderView, QListWidgetItem
 from stack_object import StackObject
 
 
 class Visualizer(QtWidgets.QMainWindow):
     def __init__(self, blang, *args):
         super(Visualizer, self).__init__()
-        uic.loadUi('/Users/kinblandford/PycharmProjects/blang/blang2_ui.ui', self)
+        uic.loadUi('/Users/kinblandford/PycharmProjects/blang/blang2_prototype_ui.ui', self)
 
         # set stuff up
         self.blang = blang
@@ -28,6 +28,9 @@ class Visualizer(QtWidgets.QMainWindow):
         QTableView {
         selection-background-color: rgb(90, 90, 90)
         }
+        QListWidget {
+        selection-background-color: rgb(90, 90, 90)
+        }
         """
         )
 
@@ -35,7 +38,7 @@ class Visualizer(QtWidgets.QMainWindow):
         self.input = self.findChild(QtWidgets.QLineEdit, 'input')
         self.log_scrollarea_label = self.findChild(QtWidgets.QLabel, 'log_scrollarea_label')
         self.varw_done_button = self.findChild(QtWidgets.QPushButton, 'varw_done_button')
-        self.varw_current_vars_label = self.findChild(QtWidgets.QLabel, 'varw_current_vars_label')
+        self.varw_current_vars_list = self.findChild(QtWidgets.QListWidget, 'varw_listwidget')
         self.varw_name_lineedit = self.findChild(QtWidgets.QLineEdit, 'varw_name_lineedit')
         self.varw_value_lineedit = self.findChild(QtWidgets.QLineEdit, 'varw_value_lineedit')
         self.fnwrtr_current_functions_label = self.findChild(QtWidgets.QLabel, 'fnwrtr_current_functions_label')
@@ -50,6 +53,7 @@ class Visualizer(QtWidgets.QMainWindow):
         # connect functionality
         self.input.returnPressed.connect(self.handle_input)
         self.varw_done_button.clicked.connect(self.handle_varw_done_button)
+        self.varw_current_vars_list.itemDoubleClicked.connect(self.handle_varw_current_vars_list_doubleclicked)
         self.fnwrtr_done_button.clicked.connect(self.handle_fnwrtr_done_button)
         self.matrw_done_button.clicked.connect(self.handle_matrw_done_button)
         self.matrw_rows_spinbox.valueChanged.connect(self.handle_matrw_rows_spinbox)
@@ -75,6 +79,19 @@ class Visualizer(QtWidgets.QMainWindow):
         self.varw_name_lineedit.clear()
         self.varw_value_lineedit.clear()
         self.blang.interpreter.command_handler.define_var([name, value])
+        self.update_all()
+
+    def handle_varw_current_vars_list_doubleclicked(self):
+        item = self.varw_current_vars_list.currentItem().text()
+        name = item.split("=")[0].strip(" ")
+        var = self.blang.data.get_var(name)
+        self.blang.stack.auto_push(var)
+        self.update_all()
+
+    def handle_varw_delete_button(self):
+        item = self.varw_current_vars_list.currentItem().text()
+        name = item.split("=")[0].strip(" ")
+        self.blang.data.rm('vars', name)
         self.update_all()
 
     def handle_fnwrtr_done_button(self):
@@ -114,10 +131,12 @@ class Visualizer(QtWidgets.QMainWindow):
         self.log_scrollarea_label.setText(self.blang.data.get_log_string())
 
     def update_varw(self):
-        self.varw_current_vars_label.setText(self.blang.data.get_var_string())
+        self.varw_current_vars_list.clear()
+        var_listwidget_items = self.blang.data.get_var_listwidget_items()
+        for item in var_listwidget_items:
+            self.varw_current_vars_list.addItem(item)
 
     def update_fnwrtr(self):
-        # DEPRECATED
         self.fnwrtr_current_functions_label.setText(self.blang.data.get_bfuncrw_string())
 
     def update_stack(self):

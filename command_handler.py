@@ -162,6 +162,9 @@ class CommandHandler:
             case "DUP":
                 self.dup(args)
 
+            case "GET":
+                self.get(args)
+
             case "DET":
                 self.det(args)
 
@@ -486,6 +489,14 @@ class CommandHandler:
             y = self.stack.popval()
             self.stack_handler.handle_token(x)
             self.stack_handler.handle_token(y)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def get(self, args):
+        try:
+            index = int(args[0])
+            x = self.stack.stack_list[-index-1]
+            self.stack_handler.handle_token(x.value)
         except Exception as e:
             self.data.log.append(str(e))
 

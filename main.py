@@ -10,9 +10,8 @@ if __name__ == "__main__":
     main()
 
 
-# TODO: Add a key to free input from line edit to execute commands
 # TODO: Replace stack label with a list view
-# TODO: Catch up to old version in misc features -- units
+# TODO: Catch up to old version in misc features -- units (no stupid stuff)
 # TODO: fnwrtr control flow
 # TODO: fnwrtr fix stupid combobox icon
 # TODO: fnwrtr Stop everything from collapsing on update (its because of clear())
@@ -23,26 +22,13 @@ if __name__ == "__main__":
 # TODO: Fix growing spaces in list (.sq repeat on list make spaces grow)
 # TODO: Make data load/save from a json
 # TODO: Update reserved keywords
-# TODO: Make matrw rows and cols scale to fit in window until a certain point at which scroll is enabled?
-# TODO: make the docs
-# TODO: Make log give basic useful information other than errors
-# TODO: make quadrature work, implement secant root finding
-
-
-# OLD TODOS:
-"""
-# ADD #
-# TODO: add more functions in general
-# TODO: remove stupid stuff from units?
-# TODO: Make units tab with categories?
+# TODO: make a unit tab where you can click them and they get put on current items? similar structure to fnwrtr fns
+# TODO: make transpose work on single row matrices
+# TODO: work on pack and unpack so they work with matrices better
 # TODO: conversions -- dtr(deg to rad), rtd(rad to deg), ctpd(cartesian to polar), ctsd(cartesian to spherical),
 # TODO:                ctcd(cartesian to cylindrical) and other way for all as well as xxxr for radians.
-
-# REFACTOR #
-# TODO: make print_stack print abbreviated units ( inside print object method units elif)
-# TODO: make transpose work on [1,2,3] pushes
-# TODO: add displaytypes for all stack objects
-
-# TEST #
-# TODO: test trig functions, test units thuroughly
-"""
+# TODO: Make matrw rows and cols scale to fit in window until a certain point at which scroll is enabled?
+# TODO: make the docs
+# TODO: more stuff in general
+# TODO: Make log give basic useful information other than errors
+# TODO: make quadrature work, implement secant root finding

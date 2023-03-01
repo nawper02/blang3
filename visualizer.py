@@ -108,6 +108,27 @@ class Visualizer(QtWidgets.QMainWindow):
         self.escape_shortcut.activated.connect(self.escape_input)
         self.enter_input_shortcut = QShortcut(QKeySequence("i"), self)
         self.enter_input_shortcut.activated.connect(self.enter_input)
+        self.stack_get_1_shortcut = QShortcut(QKeySequence("1"), self)
+        self.stack_get_1_shortcut.activated.connect(self.handle_stack_get_1_shortcut)
+        self.stack_get_2_shortcut = QShortcut(QKeySequence("2"), self)
+        self.stack_get_2_shortcut.activated.connect(self.handle_stack_get_2_shortcut)
+        self.stack_get_3_shortcut = QShortcut(QKeySequence("3"), self)
+        self.stack_get_3_shortcut.activated.connect(self.handle_stack_get_3_shortcut)
+        self.stack_get_4_shortcut = QShortcut(QKeySequence("4"), self)
+        self.stack_get_4_shortcut.activated.connect(self.handle_stack_get_4_shortcut)
+        self.stack_get_5_shortcut = QShortcut(QKeySequence("5"), self)
+        self.stack_get_5_shortcut.activated.connect(self.handle_stack_get_5_shortcut)
+        self.stack_get_6_shortcut = QShortcut(QKeySequence("6"), self)
+        self.stack_get_6_shortcut.activated.connect(self.handle_stack_get_6_shortcut)
+        self.stack_get_7_shortcut = QShortcut(QKeySequence("7"), self)
+        self.stack_get_7_shortcut.activated.connect(self.handle_stack_get_7_shortcut)
+        self.stack_get_8_shortcut = QShortcut(QKeySequence("8"), self)
+        self.stack_get_8_shortcut.activated.connect(self.handle_stack_get_8_shortcut)
+        self.stack_get_9_shortcut = QShortcut(QKeySequence("9"), self)
+        self.stack_get_9_shortcut.activated.connect(self.handle_stack_get_9_shortcut)
+        self.stack_get_0_shortcut = QShortcut(QKeySequence("0"), self)
+        self.stack_get_0_shortcut.activated.connect(self.handle_stack_get_0_shortcut)
+
 
         # set up tablewidget
         self.matrw_tablewidget.setColumnCount(self.blang.data.matrw_cols)
@@ -165,6 +186,47 @@ class Visualizer(QtWidgets.QMainWindow):
     def handle_stack_right_shortcut(self):
         self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.swap'))
         self.update_all()
+
+    def handle_stack_get_1_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.get(1)'))
+        self.update_all()
+
+    def handle_stack_get_2_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.get(2)'))
+        self.update_all()
+
+    def handle_stack_get_3_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.get(3)'))
+        self.update_all()
+
+    def handle_stack_get_4_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.get(4)'))
+        self.update_all()
+
+    def handle_stack_get_5_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.get(5)'))
+        self.update_all()
+
+    def handle_stack_get_6_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.get(6)'))
+        self.update_all()
+
+    def handle_stack_get_7_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.get(7)'))
+        self.update_all()
+
+    def handle_stack_get_8_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.get(8)'))
+        self.update_all()
+
+    def handle_stack_get_9_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.get(9)'))
+        self.update_all()
+
+    def handle_stack_get_0_shortcut(self):
+        self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.get(0)'))
+        self.update_all()
+
 
     def handle_varw_done_button(self):
         name = self.varw_name_lineedit.text()

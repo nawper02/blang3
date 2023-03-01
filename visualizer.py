@@ -104,6 +104,10 @@ class Visualizer(QtWidgets.QMainWindow):
         self.stack_subtract_shortcut.activated.connect(self.handle_stack_subtract_shortcut)
         self.stack_power_shortcut = QShortcut(QKeySequence("^"), self)
         self.stack_power_shortcut.activated.connect(self.handle_stack_power_shortcut)
+        self.escape_shortcut = QShortcut(QKeySequence("Esc"), self)
+        self.escape_shortcut.activated.connect(self.escape_input)
+        self.enter_input_shortcut = QShortcut(QKeySequence("i"), self)
+        self.enter_input_shortcut.activated.connect(self.enter_input)
 
         # set up tablewidget
         self.matrw_tablewidget.setColumnCount(self.blang.data.matrw_cols)
@@ -117,6 +121,14 @@ class Visualizer(QtWidgets.QMainWindow):
         self.input.clear()
         self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize(s))
         self.update_all()
+
+    def escape_input(self):
+        self.log_scrollarea_label.setFocus()
+        # this is a hack to get the focus off of the input lineedit
+        # if the log label is ever something else, this will break
+
+    def enter_input(self):
+        self.input.setFocus()
 
     def handle_stack_divide_shortcut(self):
         self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.div'))

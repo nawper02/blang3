@@ -10,7 +10,7 @@ if __name__ == "__main__":
     main()
 
 
-# TODO: Implement other shortcuts (set up)
+# TODO: Add a key to free input from line edit to execute commands
 # TODO: Replace stack label with a list view
 # TODO: Catch up to old version in misc features -- units
 # TODO: fnwrtr control flow

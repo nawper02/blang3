@@ -22,20 +22,22 @@ class Visualizer(QtWidgets.QMainWindow):
             background: rgb(90, 90, 90);
         }
         QTabBar::tab {
-        min-width: 85px;
-        min-height: 20px;
+            min-width: 85px;
+            min-height: 20px;
         }
         QTableView {
-        selection-background-color: rgb(90, 90, 90)
+            selection-background-color: rgb(90, 90, 90)
         }
         QListWidget {
-        selection-background-color: rgb(90, 90, 90)
+            selection-background-color: rgb(90, 90, 90)
         }
         QTreeWidget {
-        selection-background-color: rgb(90, 90, 90)
+            selection-background-color: rgb(90, 90, 90)
         }
         QComboBox {
-        selection-background-color: rgb(90, 90, 90)
+            selection-background-color: rgb(90, 90, 90)
+        }
+        QComboBox::down-arrow {
         
         }
         """
@@ -194,9 +196,6 @@ class Visualizer(QtWidgets.QMainWindow):
             self.varw_current_vars_list.addItem(item)
 
     def update_fnwrtr(self):
-        # TODO: Set stylesheet for combobox
-        # TODO: Stop everything from collapsing on update (its because of clear())
-        # TODO: Double click to edit
         folders = self.blang.data.get_fnwrtr_folders()
         self.fnwrtr_combobox.clear()
         self.fnwrtr_combobox.addItems(folders)

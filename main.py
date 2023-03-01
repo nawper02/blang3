@@ -11,7 +11,10 @@ if __name__ == "__main__":
 
 
 # TODO: Catch up to old version in misc features -- units
-# TODO: function writer overhaul -- list view (delete, double click to edit, FOLDERS), control flow (hard),
+# TODO: fnwrtr control flow
+# TODO: fnwrtr fix stupid combobox icon
+# TODO: fnwrtr Stop everything from collapsing on update (its because of clear())
+# TODO: fix functions not able to call each other with input args
 # TODO: Add stats functionality -- distributions, etc
 # TODO: Add units functionality using new strings functionality
 # TODO: Make macro label a function browser where you can expand/open and edit functions

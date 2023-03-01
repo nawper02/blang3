@@ -37,24 +37,37 @@ class Visualizer(QtWidgets.QMainWindow):
         # connect objects
         self.input = self.findChild(QtWidgets.QLineEdit, 'input')
         self.log_scrollarea_label = self.findChild(QtWidgets.QLabel, 'log_scrollarea_label')
+
         self.varw_done_button = self.findChild(QtWidgets.QPushButton, 'varw_done_button')
+        self.varw_done_button_2 = self.findChild(QtWidgets.QPushButton, 'varw_done_button_2')
+        self.varw_delete_button = self.findChild(QtWidgets.QPushButton, 'varw_delete_button')
         self.varw_current_vars_list = self.findChild(QtWidgets.QListWidget, 'varw_listwidget')
         self.varw_name_lineedit = self.findChild(QtWidgets.QLineEdit, 'varw_name_lineedit')
+        self.varw_name_lineedit_2 = self.findChild(QtWidgets.QLineEdit, 'varw_name_lineedit_2')
         self.varw_value_lineedit = self.findChild(QtWidgets.QLineEdit, 'varw_value_lineedit')
+        self.varw_index_lineedit = self.findChild(QtWidgets.QLineEdit, 'varw_index_lineedit')
+
         self.fnwrtr_current_functions_label = self.findChild(QtWidgets.QLabel, 'fnwrtr_current_functions_label')
         self.fnwrtr_done_button = self.findChild(QtWidgets.QPushButton, 'fnwrtr_done_button')
         self.fnwrtr_textedit = self.findChild(QtWidgets.QPlainTextEdit, 'fnwrtr_textedit')
+
         self.matrw_cols_spinbox = self.findChild(QtWidgets.QSpinBox, 'matrw_cols_spinbox')
         self.matrw_rows_spinbox = self.findChild(QtWidgets.QSpinBox, 'matrw_rows_spinbox')
         self.matrw_done_button = self.findChild(QtWidgets.QPushButton, 'matrw_done_button')
         self.matrw_tablewidget = self.findChild(QtWidgets.QTableWidget, 'matrw_tablewidget')
+
         self.stack_label = self.findChild(QtWidgets.QLabel, 'stack_label')
 
         # connect functionality
         self.input.returnPressed.connect(self.handle_input)
+
         self.varw_done_button.clicked.connect(self.handle_varw_done_button)
-        self.varw_current_vars_list.itemDoubleClicked.connect(self.handle_varw_current_vars_list_doubleclicked)
+        self.varw_done_button_2.clicked.connect(self.handle_varw_done_button_2)
+        self.varw_delete_button.clicked.connect(self.handle_varw_delete_button)
+        self.varw_current_vars_list.itemDoubleClicked.connect(self.handle_varw_current_vars_list_double_clicked)
+
         self.fnwrtr_done_button.clicked.connect(self.handle_fnwrtr_done_button)
+
         self.matrw_done_button.clicked.connect(self.handle_matrw_done_button)
         self.matrw_rows_spinbox.valueChanged.connect(self.handle_matrw_rows_spinbox)
         self.matrw_cols_spinbox.valueChanged.connect(self.handle_matrw_cols_spinbox)
@@ -76,23 +89,38 @@ class Visualizer(QtWidgets.QMainWindow):
     def handle_varw_done_button(self):
         name = self.varw_name_lineedit.text()
         value = self.blang.parser.get_value(self.varw_value_lineedit.text(), allow_string_value=True)
-        self.varw_name_lineedit.clear()
-        self.varw_value_lineedit.clear()
-        self.blang.interpreter.command_handler.define_var([name, value])
-        self.update_all()
+        if name is not None and value is not None:
+            self.varw_name_lineedit.clear()
+            self.varw_value_lineedit.clear()
+            self.blang.interpreter.command_handler.define_var([name, value])
+            self.update_all()
 
-    def handle_varw_current_vars_list_doubleclicked(self):
-        item = self.varw_current_vars_list.currentItem().text()
-        name = item.split("=")[0].strip(" ")
-        var = self.blang.data.get_var(name)
-        self.blang.stack.auto_push(var)
-        self.update_all()
+    def handle_varw_done_button_2(self):
+        name = self.varw_name_lineedit_2.text()
+        index = self.varw_index_lineedit.text()
+        if index is not None:
+            self.blang.interpreter.command_handler.define_var_from_index([name, index])
+            self.varw_index_lineedit.clear()
+            self.varw_name_lineedit_2.clear()
+            self.update_all()
+
+    def handle_varw_current_vars_list_double_clicked(self):
+        try:
+            item = self.varw_current_vars_list.currentItem().text()
+            name = item.split("=")[0].strip(" ")
+            self.blang.interpreter.stack_handler.handle_token(name)
+            self.update_all()
+        except AttributeError:
+            pass
 
     def handle_varw_delete_button(self):
-        item = self.varw_current_vars_list.currentItem().text()
-        name = item.split("=")[0].strip(" ")
-        self.blang.data.rm('vars', name)
-        self.update_all()
+        try:
+            item = self.varw_current_vars_list.currentItem().text()
+            name = item.split("=")[0].strip(" ")
+            self.blang.data.rm('vars', name)
+            self.update_all()
+        except AttributeError:
+            pass
 
     def handle_fnwrtr_done_button(self):
         body = self.fnwrtr_textedit.toPlainText()

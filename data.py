@@ -1,7 +1,7 @@
 from datetime import date
 import numpy as np
 from bfunction import BFunction
-from PyQt6.QtWidgets import QListWidgetItem
+from PyQt6.QtWidgets import QListWidgetItem, QTreeWidgetItem
 
 
 class Data:
@@ -19,9 +19,9 @@ class Data:
 
         self.pvars = {}
 
-        example_bfunction = BFunction(".hyp(a b)\na .sq b .sq .add .sqrt")
-        self.bfunctions = {}
-        self.bfunctions[example_bfunction.name] = example_bfunction
+        hyp = BFunction(".hyp(a b)\na .sq b .sq .add .sqrt")
+        vdiv = BFunction(".vdiv(vin r1 r2)\nr1 r2 r1 .add .div vin .x")
+        self.bfunctions = {"Misc": {f"{hyp.name}": hyp}, "ECE": {f"{vdiv.name}": vdiv}}
 
         self.reserved_words = \
             ["", "POP", "ADD", "SUB", "X", "DIV", "SQRT", "SQ", "LN", "LBY", "SIN", "SIND", "COS", "COSD", "TAN",
@@ -42,10 +42,17 @@ class Data:
     def update_matrw_mat(self):
         self.matrw_mat = np.zeros((self.matrw_rows, self.matrw_cols), dtype=float)
 
-    def define_bfunction(self, bfunction: BFunction):
+    def define_bfunction(self, bfunction: BFunction, folder: str):
         if bfunction.name.upper() in self.reserved_words:
             self.log.append("WARN: BFunction name assigned to reserved word -- execution will not be possible")
-        self.bfunctions[bfunction.name] = bfunction
+        #self.bfunctions[bfunction.name] = bfunction
+        self.bfunctions[folder][bfunction.name] = bfunction
+
+    def find_bfunction(self, name: str):
+        for folder in self.bfunctions:
+            if name in self.bfunctions[folder]:
+                return self.bfunctions[folder][name]
+        return None
 
     def define_var(self, name: str, value):
         self.vars[name] = value
@@ -67,20 +74,32 @@ class Data:
             log_string += "\n"
         return log_string
 
-    # DEPRECATED
-    def get_var_string(self):
-        vars_string = ""
-        for entry in self.vars:
-            vars_string += f"{entry} = {self.vars[entry]}\n"
-        for line in range(27 - len(self.vars)):
-            vars_string += "\n"
-        return vars_string
-
     def get_var_listwidget_items(self):
         var_listwidget_items = []
         for entry in self.vars:
             var_listwidget_items.append(QListWidgetItem(f"{entry} = {self.vars[entry]}"))
         return var_listwidget_items
+
+    def get_fnwrtr_tree_items(self):
+        fnwrtr_tree_items = []
+        for key, values in self.bfunctions.items():
+            item = QTreeWidgetItem([key])
+            for key2, value2 in values.items():
+                #name, args = value2.get_name_and_args()
+                child = QTreeWidgetItem([value2.head])
+                item.addChild(child)
+            fnwrtr_tree_items.append(item)
+        return fnwrtr_tree_items
+
+    def get_fnwrtr_folders(self):
+        return list(self.bfunctions.keys())
+
+    def get_full_bfunction_string(self, name):
+        bfunc = self.find_bfunction(name)
+        return bfunc.body
+
+    def define_bfunction_folder(self, name):
+        self.bfunctions[name] = {}
 
     def get_bfuncrw_string(self):
         bfuncrw_string = ""

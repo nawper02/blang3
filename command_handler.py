@@ -261,6 +261,9 @@ class CommandHandler:
             case "PACK":
                 self.pack(args)
 
+            case "REVERSE":
+                self.reverse(args)
+
             case "EYE":
                 self.eye(args)
 
@@ -497,6 +500,12 @@ class CommandHandler:
             index = int(args[0])
             x = self.stack.stack_list[-index-1]
             self.stack_handler.handle_token(x.value)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def reverse(self, args):
+        try:
+            self.stack.stack_list.reverse()
         except Exception as e:
             self.data.log.append(str(e))
 
@@ -944,7 +953,7 @@ class CommandHandler:
             for item in self.stack.stack_list:
                 array.append(item.value)
             self.stack.clear()
-            self.stack_handler.handle_token(array)
+            self.stack_handler.handle_token(np.array(array))
         except Exception as e:
             self.data.log.append(str(e))
 

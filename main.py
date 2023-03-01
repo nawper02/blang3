@@ -10,8 +10,8 @@ if __name__ == "__main__":
     main()
 
 
-# TODO: Replace stack label with a list view
 # TODO: Catch up to old version in misc features -- units (no stupid stuff)
+# TODO: make stack label grow (but leave it as a label not a listwidget)
 # TODO: fnwrtr control flow
 # TODO: fnwrtr fix stupid combobox icon
 # TODO: fnwrtr Stop everything from collapsing on update (its because of clear())

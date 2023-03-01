@@ -6,7 +6,7 @@ from stack_object import StackObject
 class Visualizer(QtWidgets.QMainWindow):
     def __init__(self, blang, *args):
         super(Visualizer, self).__init__()
-        uic.loadUi('/Users/kinblandford/PycharmProjects/blang/blang2_ui.ui', self)
+        uic.loadUi('/Users/kinblandford/PycharmProjects/blang/blang2_prototype_ui.ui', self)
 
         # set stuff up
         self.blang = blang
@@ -31,6 +31,13 @@ class Visualizer(QtWidgets.QMainWindow):
         QListWidget {
         selection-background-color: rgb(90, 90, 90)
         }
+        QTreeWidget {
+        selection-background-color: rgb(90, 90, 90)
+        }
+        QComboBox {
+        selection-background-color: rgb(90, 90, 90)
+        
+        }
         """
         )
 
@@ -47,9 +54,12 @@ class Visualizer(QtWidgets.QMainWindow):
         self.varw_value_lineedit = self.findChild(QtWidgets.QLineEdit, 'varw_value_lineedit')
         self.varw_index_lineedit = self.findChild(QtWidgets.QLineEdit, 'varw_index_lineedit')
 
-        self.fnwrtr_current_functions_label = self.findChild(QtWidgets.QLabel, 'fnwrtr_current_functions_label')
+        self.fnwrtr_current_functions_tree = self.findChild(QtWidgets.QTreeWidget, 'fnwrtr_tree')
         self.fnwrtr_done_button = self.findChild(QtWidgets.QPushButton, 'fnwrtr_done_button')
         self.fnwrtr_textedit = self.findChild(QtWidgets.QPlainTextEdit, 'fnwrtr_textedit')
+        self.fnwrtr_combobox = self.findChild(QtWidgets.QComboBox, 'fnwrtr_combobox')
+        self.fnwrtr_new_folder_lineedit = self.findChild(QtWidgets.QLineEdit, 'fnwrtr_new_folder_lineedit')
+        self.fnwrtr_new_folder_done_button = self.findChild(QtWidgets.QPushButton, 'fnwrtr_new_folder_done_button')
 
         self.matrw_cols_spinbox = self.findChild(QtWidgets.QSpinBox, 'matrw_cols_spinbox')
         self.matrw_rows_spinbox = self.findChild(QtWidgets.QSpinBox, 'matrw_rows_spinbox')
@@ -67,6 +77,9 @@ class Visualizer(QtWidgets.QMainWindow):
         self.varw_current_vars_list.itemDoubleClicked.connect(self.handle_varw_current_vars_list_double_clicked)
 
         self.fnwrtr_done_button.clicked.connect(self.handle_fnwrtr_done_button)
+        #self.fnwrtr_combobox.currentTextChanged.connect(self.handle_fnwrtr_combobox_current_text_changed)
+        self.fnwrtr_new_folder_done_button.clicked.connect(self.handle_fnwrtr_new_folder_done_button)
+        self.fnwrtr_current_functions_tree.itemDoubleClicked.connect(self.handle_fnwrtr_current_functions_tree_double_clicked)
 
         self.matrw_done_button.clicked.connect(self.handle_matrw_done_button)
         self.matrw_rows_spinbox.valueChanged.connect(self.handle_matrw_rows_spinbox)
@@ -113,6 +126,15 @@ class Visualizer(QtWidgets.QMainWindow):
         except AttributeError:
             pass
 
+    def handle_fnwrtr_current_functions_tree_double_clicked(self):
+        try:
+            item = self.fnwrtr_current_functions_tree.currentItem().text(0)
+            name = item.split("(")[0].strip(" .")
+            self.fnwrtr_textedit.setPlainText(self.blang.data.get_full_bfunction_string(name))
+            self.update_all()
+        except AttributeError:
+            pass
+
     def handle_varw_delete_button(self):
         try:
             item = self.varw_current_vars_list.currentItem().text()
@@ -125,7 +147,14 @@ class Visualizer(QtWidgets.QMainWindow):
     def handle_fnwrtr_done_button(self):
         body = self.fnwrtr_textedit.toPlainText()
         self.fnwrtr_textedit.clear()
-        self.blang.interpreter.command_handler.define_bfunction(body)
+        folder = self.fnwrtr_combobox.currentText()
+        self.blang.interpreter.command_handler.define_bfunction(body, folder)
+        self.update_all()
+
+    def handle_fnwrtr_new_folder_done_button(self):
+        name = self.fnwrtr_new_folder_lineedit.text()
+        self.fnwrtr_new_folder_lineedit.clear()
+        self.blang.data.define_bfunction_folder(name)
         self.update_all()
 
     def handle_matrw_done_button(self):
@@ -165,7 +194,15 @@ class Visualizer(QtWidgets.QMainWindow):
             self.varw_current_vars_list.addItem(item)
 
     def update_fnwrtr(self):
-        self.fnwrtr_current_functions_label.setText(self.blang.data.get_bfuncrw_string())
+        # TODO: Set stylesheet for combobox
+        # TODO: Stop everything from collapsing on update (its because of clear())
+        # TODO: Double click to edit
+        folders = self.blang.data.get_fnwrtr_folders()
+        self.fnwrtr_combobox.clear()
+        self.fnwrtr_combobox.addItems(folders)
+        items = self.blang.data.get_fnwrtr_tree_items()
+        self.fnwrtr_current_functions_tree.clear()
+        self.fnwrtr_current_functions_tree.insertTopLevelItems(0, items)
 
     def update_stack(self):
         self.stack_label.setText(self.blang.stack.get_full_stack_string())

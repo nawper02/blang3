@@ -249,7 +249,12 @@ class CommandHandler:
             # Remember to add to reserved keywords when making new commands!
 
             case _:
-                if command in self.data.bfunctions.keys():
+                cmds = []
+                for key, folder in self.data.bfunctions.items():
+                    for name in folder.keys():
+                        cmds.append(name)
+
+                if command in cmds:
                     self.execute_bfunction(command, args)
 
     def add(self, args):
@@ -735,7 +740,7 @@ class CommandHandler:
 
     def execute_bfunction(self, name, args):
         try:
-            bfunction = self.data.bfunctions[name]
+            bfunction = self.data.find_bfunction(name)
             self.interpreter.interpret_tokens(self.parser.tokenize_bfunction(bfunction, args))
         except Exception as e:
             self.data.log.append(str(e))
@@ -828,10 +833,10 @@ class CommandHandler:
         except Exception as e:
             self.data.log.append(str(e))
 
-    def define_bfunction(self, body):
+    def define_bfunction(self, body, folder):
         try:
             bfunction = BFunction(body)
-            self.data.define_bfunction(bfunction)
+            self.data.define_bfunction(bfunction, folder)
         except Exception as e:
             self.data.log.append(str(e))
 

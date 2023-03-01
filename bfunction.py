@@ -19,6 +19,7 @@ import re
 
 class BFunction:
     def __init__(self, body: str):
+        self.body = body
         # Split text body (from macrw) into lines
         self.lines = body.split('\n')
         # Get the first line (the header)

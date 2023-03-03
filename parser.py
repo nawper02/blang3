@@ -71,7 +71,10 @@ class Parser:
 
         for index, token in enumerate(tokens): # For each token
             if token in f.args: # If token is an arg
-                tokens[index] = inputs[f.args.index(token)] # Replace arg with input
+                if type(inputs[f.args.index(token)]) == str:
+                    tokens[index] = f"'{inputs[f.args.index(token)]}'"
+                else:
+                    tokens[index] = inputs[f.args.index(token)] # Replace arg with input
 
         return tokens
 
@@ -98,8 +101,8 @@ class Parser:
             return None
 
     @staticmethod
-    def is_cmd(token):
-        pattern = re.compile(r"\.[a-zA-Z]+(\(.+\))?", re.IGNORECASE)
+    def is_cmd(token): #CHANGETAG
+        pattern = re.compile(r"[tTfF]?\.[a-zA-Z]+(\(.+\))?", re.IGNORECASE)
         return pattern.match(token)
 
     @staticmethod
@@ -110,7 +113,7 @@ class Parser:
         # if token is a string that can be interpreted as a float
         else:
             try:
-                pattern = re.compile(r"^([+-]?(?=\.\d|\d)(?:\d+)?(?:\.?\d*))(?:[eE]([+-]?\d+))?$", re.IGNORECASE)
+                pattern = re.compile(r"^[tTfF]?([+-]?(?=\.\d|\d)(?:\d+)?(?:\.?\d*))(?:[eE]([+-]?\d+))?$", re.IGNORECASE)
                 return pattern.match(token)
             except TypeError:
                 return False
@@ -119,7 +122,7 @@ class Parser:
     def is_list(token, check_value=True, check_string=True):
         if check_string:
             try:
-                pattern = re.compile(r"^\[(.*)\]$", re.IGNORECASE)
+                pattern = re.compile(r"^[tTfF]?\[(.*)\]$", re.IGNORECASE)
                 return pattern.match(token)
             except TypeError:
                 return False
@@ -131,12 +134,13 @@ class Parser:
 
     @staticmethod
     def is_string(token):
-        pattern = re.compile(r"^('.*')$", re.IGNORECASE)
+        pattern = re.compile(r"[tTfF]?('.*')", re.IGNORECASE)
+        # string swap bug: the result of re.compile is none when swapping only.
         return re.match(pattern, token) or token == "__STRING__"
 
     @staticmethod
     def get_string(token):
-        pattern = re.compile(r"('.*')", re.IGNORECASE)
+        pattern = re.compile(r"[tTfF]?('.*')", re.IGNORECASE)
         match = re.match(pattern, token)
         if match:
             # This is a string token
@@ -157,6 +161,10 @@ class Parser:
         elif self.is_list(token):
             return True
 
+        # If the token is a string
+        #elif self.is_string(token):
+        #    return True
+
         # If the token is a var
         elif token in self.data.vars.keys():
             return True
@@ -166,6 +174,9 @@ class Parser:
 
     # Gets value of a token or string (if it can be interpreted as a value or string)
     def get_value(self, token, allow_string_value=False):
+
+        # if the token starts with a t or f, remove it
+        token = self.strip_prefix(token)
 
         # If the token is a floating point number
         if self.is_number(token):
@@ -193,4 +204,13 @@ class Parser:
 
         else:
             return None
+
+    @staticmethod
+    def strip_prefix(token):
+        if type(token) is not str:
+            return token
+        if token[0] in "tTfF":
+            return token[1:]
+        else:
+            return token
 

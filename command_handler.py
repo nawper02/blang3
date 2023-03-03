@@ -20,7 +20,7 @@ class CommandHandler:
 
         else:
             # Extract command and args from token
-            match = re.match(r'\.(\w+)(\(.*\))?', token)
+            match = re.match(r'[+tTfF]?\.(\w+)(\(.*\))?', token) #CHANGETAG
 
             # Index out the groups (command and args)
             command = match.group(1)                            # COMMAND
@@ -179,6 +179,9 @@ class CommandHandler:
 
             case "SUM":
                 self.sum_stack(args)
+
+            case "PROD":
+                self.prod_stack(args)
 
             case "INT":
                 self.integrate(args)
@@ -488,10 +491,10 @@ class CommandHandler:
 
     def swap(self, args):
         try:
-            x = self.stack.popval()
-            y = self.stack.popval()
-            self.stack_handler.handle_token(x)
-            self.stack_handler.handle_token(y)
+            x = self.stack.pop()
+            y = self.stack.pop()
+            self.stack.stack_list.append(x)
+            self.stack.stack_list.append(y)
         except Exception as e:
             self.data.log.append(str(e))
 
@@ -541,6 +544,14 @@ class CommandHandler:
     def sum_stack(self, args):
         try:
             value = self.stack.sum_stack()
+            self.stack.clear()
+            self.stack_handler.handle_token(value)
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def prod_stack(self, args):
+        try:
+            value = self.stack.prod_stack()
             self.stack.clear()
             self.stack_handler.handle_token(value)
         except Exception as e:
@@ -896,7 +907,10 @@ class CommandHandler:
         try:
             value1 = args[0]
             value2 = args[1]
-            self.stack_handler.handle_token(int(value1 == value2))
+            if value1 == value2:
+                self.interpreter.run_state = True
+            else:
+                self.interpreter.run_state = False
         except Exception as e:
             self.data.log.append(str(e))
 
@@ -904,7 +918,10 @@ class CommandHandler:
         try:
             value1 = args[0]
             value2 = args[1]
-            self.stack_handler.handle_token(int(value1 != value2))
+            if value1 != value2:
+                self.interpreter.run_state = True
+            else:
+                self.interpreter.run_state = False
         except Exception as e:
             self.data.log.append(str(e))
 
@@ -912,7 +929,10 @@ class CommandHandler:
         try:
             value1 = args[0]
             value2 = args[1]
-            self.stack_handler.handle_token(int(value1 > value2))
+            if value1 > value2:
+                self.interpreter.run_state = True
+            else:
+                self.interpreter.run_state = False
         except Exception as e:
             self.data.log.append(str(e))
 
@@ -920,7 +940,10 @@ class CommandHandler:
         try:
             value1 = args[0]
             value2 = args[1]
-            self.stack_handler.handle_token(int(value1 < value2))
+            if value1 < value2:
+                self.interpreter.run_state = True
+            else:
+                self.interpreter.run_state = False
         except Exception as e:
             self.data.log.append(str(e))
 
@@ -928,7 +951,10 @@ class CommandHandler:
         try:
             value1 = args[0]
             value2 = args[1]
-            self.stack_handler.handle_token(int(value1 >= value2))
+            if value1 >= value2:
+                self.interpreter.run_state = True
+            else:
+                self.interpreter.run_state = False
         except Exception as e:
             self.data.log.append(str(e))
 
@@ -936,7 +962,10 @@ class CommandHandler:
         try:
             value1 = args[0]
             value2 = args[1]
-            self.stack_handler.handle_token(int(value1 <= value2))
+            if value1 <= value2:
+                self.interpreter.run_state = True
+            else:
+                self.interpreter.run_state = False
         except Exception as e:
             self.data.log.append(str(e))
 

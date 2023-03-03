@@ -11,7 +11,9 @@ if __name__ == "__main__":
 
 
 # TODO: Catch up to old version in misc features -- units (no stupid stuff)
-# TODO: fnwrtr control flow -- loops
+# TODO: fnwrtr control flow -- loops -- more prefixes? maybe prefixes for loops?
+# TODO: refactor interpreter.interpret_tokens
+# TODO: allow lists with spaces?
 # TODO: add delete button to fnwrtr
 # TODO: make stack label grow (but leave it as a label not a listwidget)
 # TODO: fnwrtr fix stupid combobox icon

@@ -81,27 +81,30 @@ class Parser:
             if token in f.args:  # If token is an arg
                 tokens[index] = variables_dict[token]  # Replace token with inp
             elif self.is_cmd(token):  # If token is a command
-                tokens[index] = self.replace_variables_in_parentheses(token, variables_dict) # Replace variables in parentheses with inputs
+                tokens[index] = self.replace_variables_in_block(token, variables_dict, left_char="(", right_char=")") # Replace variables in parentheses with inputs
+
+            elif self.is_list(token): # If token is a list
+                tokens[index] = self.replace_variables_in_block(token, variables_dict, left_char="[", right_char="]")
 
         return tokens
 
     @staticmethod
-    def replace_variables_in_parentheses(string, variables):
+    def replace_variables_in_block(string, variables, left_char="(", right_char=")"):
         start = 0
         result = ""
         while True:
-            open_paren = string.find("(", start)
+            open_paren = string.find(left_char, start)
             if open_paren == -1:
                 result += string[start:]
                 break
             result += string[start:open_paren + 1]
-            close_paren = string.find(")", open_paren)
+            close_paren = string.find(right_char, open_paren)
             if close_paren == -1:
                 break
             inside_paren = string[open_paren + 1:close_paren]
             for var, val in variables.items():
                 inside_paren = inside_paren.replace(var, val)
-            result += inside_paren + ")"
+            result += inside_paren + right_char
             start = close_paren + 1
         return result
 

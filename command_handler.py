@@ -20,7 +20,7 @@ class CommandHandler:
 
         else:
             # Extract command and args from token
-            match = re.match(r'[+tTfF]?\.(\w+)(\(.*\))?', token) #CHANGETAG
+            match = re.match(r'[tTfF]?\.(\w+)(\(.*\))?', token) #CHANGETAG
 
             # Index out the groups (command and args)
             command = match.group(1)                            # COMMAND
@@ -771,7 +771,7 @@ class CommandHandler:
 
     def dup(self, args):
         try:
-            self.stack.stack_list.append(self.stack.stack_list[0])
+            self.stack.stack_list.append(self.stack.stack_list[-1])
         except Exception as e:
             self.data.log.append(str(e))
 

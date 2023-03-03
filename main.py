@@ -11,8 +11,6 @@ if __name__ == "__main__":
 
 
 # TODO: Catch up to old version in misc features -- units (no stupid stuff)
-# TODO: fix problems with different type inputs (working with strings and numbers, not lists)
-# TODO: Fix passing string to function calls within function calls not working
 # TODO: fnwrtr control flow -- loops
 # TODO: add delete button to fnwrtr
 # TODO: make stack label grow (but leave it as a label not a listwidget)

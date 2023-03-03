@@ -15,38 +15,38 @@ class Interpreter:
         for token in tokens:
             if self.parser.is_value(token) or self.parser.is_string(token):
                 # Putting 'is_string' in 'is_value' (an attempt at refactoring) broke everything for no reason.
-                self.interpret_value(token) #CHANGETAG
+                self.interpret_value(token)
             elif self.parser.is_cmd(token):
-                self.interpret_command(token) #CHANGETAG
+                self.interpret_command(token)
             elif len(tokens) == 1 and token == "":
                 self.command_handler.handle_token(token)
             else:
                 pass
 
+    # this method handles regular values and conditional values
     def interpret_value(self, value):
         try:
             if type(value) != str:
                 self.stack_handler.handle_token(value)
 
             else:
-                if value[0].upper() == 'T':
-                    if self.run_state == True:
-                        self.stack_handler.handle_token(value)
-                elif value[0].upper() == 'F':
-                    if self.run_state == False:
-                        self.stack_handler.handle_token(value)
+                if (value[0].upper(), self.run_state) in [('T', True), ('F', False)]:
+                    self.stack_handler.handle_token(value)
+                elif (value[0].upper(), self.run_state) in [('T', False), ('F', True)]:
+                    pass
                 else:
                     self.stack_handler.handle_token(value)
 
         except Exception as e:
             self.data.log.append(str(e))
 
-    def interpret_command(self, command): #CHANGETAG
+    # this method handles regular commands and conditional commands
+    def interpret_command(self, command):
         try:
-            if command[0].upper() == 'T' and self.run_state == True:
+            if (command[0].upper(), self.run_state) in [('T', True), ('F', False)]:
                 self.command_handler.handle_token(command)
-            elif command[0].upper() == 'F' and self.run_state == False:
-                self.command_handler.handle_token(command)
+            elif (command[0].upper(), self.run_state) in [('T', False), ('F', True)]:
+                pass
             else:
                 self.command_handler.handle_token(command)
         except Exception as e:

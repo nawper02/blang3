@@ -1,4 +1,5 @@
 from stack_object import StackObject
+import numpy as np
 
 
 class Stack:
@@ -19,6 +20,12 @@ class Stack:
         except Exception as e:
             self.data.log.append(str(e))
 
+    def pop(self):
+        try:
+            return self.stack_list.pop()
+        except Exception as e:
+            self.data.log.append(str(e))
+
     def popval(self):
         try:
             return self.stack_list.pop().value
@@ -28,6 +35,12 @@ class Stack:
     def sum_stack(self):
         try:
             return sum([x.value for x in self.stack_list])
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def prod_stack(self):
+        try:
+            return np.prod([x.value for x in self.stack_list])
         except Exception as e:
             self.data.log.append(str(e))
 

@@ -21,7 +21,8 @@ class Data:
 
         hyp = BFunction(".hyp(a b)\na .sq b .sq .add .sqrt")
         vdiv = BFunction(".vdiv(vin r1 r2)\nr1 r2 r1 .add .div vin .x")
-        self.bfunctions = {"Misc": {f"{hyp.name}": hyp}, "ECE": {f"{vdiv.name}": vdiv}}
+        test = BFunction(".test(s)\ns")
+        self.bfunctions = {"Misc": {f"{hyp.name}": hyp, f"{test.name}": test}, "ECE": {f"{vdiv.name}": vdiv}}
 
         self.reserved_words = \
             ["", "POP", "ADD", "SUB", "X", "DIV", "SQRT", "SQ", "LN", "LBY", "SIN", "SIND", "COS", "COSD", "TAN",
@@ -35,7 +36,7 @@ class Data:
 
         today = date.today()
         init_str = today.strftime("%b-%d-%Y")
-        self.log = [f"BLANG v2.0.0 -- {init_str}"]
+        self.log = [f"BLANG v3.0.0 -- {init_str}"]
 
         self.dictionaries = {"vars": self.vars, "pvars": self.pvars, "bfunctions": self.bfunctions}
 

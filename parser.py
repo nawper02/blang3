@@ -9,10 +9,12 @@ class Parser:
         self.stack = stack
         self.data = data
 
+
+
     # Method to turn string input into list of usable tokens
     # Doesn't split up things we don't want to split up, like lists strings or args
     @staticmethod
-    def tokenize(s: str, bfunction=None, inputs=None):
+    def tokenize(s: str): # , bfunction=None, inputs=None
         # if the entire string is just an empty string, return it so commandhandler can catch it and call dup
         if s == "":
             return [s]
@@ -37,17 +39,6 @@ class Parser:
         # Split the string on spaces
         tokens = s.split(" ")
 
-        # Dear god this is ugly
-        # If you are reading this, I am sorry
-        if inputs is not None and bfunction is not None:
-            new_arg_matches = []
-            for arg_match in arg_matches:
-                for arg in arg_match.strip("()").split(" "):
-                    if arg in bfunction.args:
-                        arg_match = arg_match.replace(arg, str(inputs[bfunction.args.index(arg)]))
-                new_arg_matches.append(arg_match)
-            arg_matches = new_arg_matches
-
         # Replace the special character with the original substring
         for i in range(len(tokens)):
 
@@ -64,16 +55,55 @@ class Parser:
         tokens = list(filter(lambda x: x.strip(), tokens))
         return tokens
 
+    # the main job of this method is to replace variables with values
     def tokenize_bfunction(self, f: BFunction, inputs: list):
+        # turn everything in inputs into a string representation of the object
+        # if it's a list, turn it into a string representation of a list
+        # if it's a string, wrap it in quotes
+        # if it's a number, leave it as is
+        for index, inp in enumerate(inputs):
+            if type(inp) == str:
+                inputs[index] = f"'{inp}'"
+            elif type(inp) in (list, np.ndarray):
+                inputs[index] = "[" + ",".join([str(item) for item in inp]) + "]"
+            else:
+                inputs[index] = str(inp)
+
+        # map f.args to inputs (element wise) and raise an error if there is a different number of args and inputs
+        variables_dict = dict(zip(f.args, inputs))
+
         tokens = []
         for line in f.pgrm_lines:
-            tokens += self.tokenize(line, bfunction=f, inputs=inputs)
+            tokens += self.tokenize(line)
 
-        for index, token in enumerate(tokens): # For each token
-            if token in f.args: # If token is an arg
-                tokens[index] = inputs[f.args.index(token)] # Replace arg with input
+        # Replace tokens with inputs
+        for index, token in enumerate(tokens):  # For each token
+            if token in f.args:  # If token is an arg
+                tokens[index] = variables_dict[token]  # Replace token with inp
+            elif self.is_cmd(token):  # If token is a command
+                tokens[index] = self.replace_variables_in_parentheses(token, variables_dict) # Replace variables in parentheses with inputs
 
         return tokens
+
+    @staticmethod
+    def replace_variables_in_parentheses(string, variables):
+        start = 0
+        result = ""
+        while True:
+            open_paren = string.find("(", start)
+            if open_paren == -1:
+                result += string[start:]
+                break
+            result += string[start:open_paren + 1]
+            close_paren = string.find(")", open_paren)
+            if close_paren == -1:
+                break
+            inside_paren = string[open_paren + 1:close_paren]
+            for var, val in variables.items():
+                inside_paren = inside_paren.replace(var, val)
+            result += inside_paren + ")"
+            start = close_paren + 1
+        return result
 
     @staticmethod
     def find_outermost_block(s: str, left_char: str, right_char: str):
@@ -98,8 +128,8 @@ class Parser:
             return None
 
     @staticmethod
-    def is_cmd(token):
-        pattern = re.compile(r"\.[a-zA-Z]+(\(.+\))?", re.IGNORECASE)
+    def is_cmd(token): #CHANGETAG
+        pattern = re.compile(r"[tTfF]?\.[a-zA-Z]+(\(.+\))?", re.IGNORECASE)
         return pattern.match(token)
 
     @staticmethod
@@ -110,7 +140,7 @@ class Parser:
         # if token is a string that can be interpreted as a float
         else:
             try:
-                pattern = re.compile(r"^([+-]?(?=\.\d|\d)(?:\d+)?(?:\.?\d*))(?:[eE]([+-]?\d+))?$", re.IGNORECASE)
+                pattern = re.compile(r"^[tTfF]?([+-]?(?=\.\d|\d)(?:\d+)?(?:\.?\d*))(?:[eE]([+-]?\d+))?$", re.IGNORECASE)
                 return pattern.match(token)
             except TypeError:
                 return False
@@ -119,7 +149,7 @@ class Parser:
     def is_list(token, check_value=True, check_string=True):
         if check_string:
             try:
-                pattern = re.compile(r"^\[(.*)\]$", re.IGNORECASE)
+                pattern = re.compile(r"^[tTfF]?\[(.*)\]$", re.IGNORECASE)
                 return pattern.match(token)
             except TypeError:
                 return False
@@ -129,14 +159,16 @@ class Parser:
             else:
                 return False
 
-    @staticmethod
-    def is_string(token):
-        pattern = re.compile(r"^('.*')$", re.IGNORECASE)
-        return re.match(pattern, token) or token == "__STRING__"
+    def is_string(self, token):
+        if not self.is_number(token) and not self.is_list(token):
+            pattern = re.compile(r"[tTfF]?('.*')", re.IGNORECASE)
+            return re.match(pattern, token) or token == "__STRING__"
+        else:
+            return False
 
     @staticmethod
     def get_string(token):
-        pattern = re.compile(r"('.*')", re.IGNORECASE)
+        pattern = re.compile(r"[tTfF]?('.*')", re.IGNORECASE)
         match = re.match(pattern, token)
         if match:
             # This is a string token
@@ -157,6 +189,10 @@ class Parser:
         elif self.is_list(token):
             return True
 
+        # If the token is a string
+        #elif self.is_string(token):
+        #    return True
+
         # If the token is a var
         elif token in self.data.vars.keys():
             return True
@@ -166,6 +202,9 @@ class Parser:
 
     # Gets value of a token or string (if it can be interpreted as a value or string)
     def get_value(self, token, allow_string_value=False):
+
+        # if the token starts with a t or f, remove it
+        token = self.strip_prefix(token)
 
         # If the token is a floating point number
         if self.is_number(token):
@@ -193,4 +232,13 @@ class Parser:
 
         else:
             return None
+
+    @staticmethod
+    def strip_prefix(token):
+        if type(token) is not str:
+            return token
+        if token[0] in "tTfF":
+            return token[1:]
+        else:
+            return token
 

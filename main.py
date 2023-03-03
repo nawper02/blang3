@@ -1,5 +1,7 @@
 from blang import Blang
 
+# pyinstaller BLANG3.spec
+
 
 def main():
     blang = Blang()
@@ -12,7 +14,7 @@ if __name__ == "__main__":
 
 # TODO: Catch up to old version in misc features -- units (no stupid stuff)
 # TODO: fnwrtr control flow -- loops -- more prefixes? maybe prefixes for loops?
-# TODO: refactor interpreter.interpret_tokens
+# TODO: refactor interpreter.interpret_tokens, refactor parser is_value and get_value
 # TODO: add delete button to fnwrtr
 # TODO: make stack label grow (but leave it as a label not a listwidget)
 # TODO: fnwrtr fix stupid combobox icon
@@ -22,7 +24,7 @@ if __name__ == "__main__":
 # TODO: Make macro label a function browser where you can expand/open and edit functions
 # TODO: Make var label display matrices correctly
 # TODO: Fix growing spaces in list (.sq repeat on list make spaces grow)
-# TODO: Make data load/save from a json
+# TODO: Make data load/save from a file -- https://pyinstaller.org/en/stable/spec-files.html#using-spec-files
 # TODO: Update reserved keywords
 # TODO: make a unit tab where you can click them and they get put on current items? similar structure to fnwrtr fns
 # TODO: make transpose work on single row matrices

@@ -13,7 +13,6 @@ if __name__ == "__main__":
 # TODO: Catch up to old version in misc features -- units (no stupid stuff)
 # TODO: fnwrtr control flow -- loops -- more prefixes? maybe prefixes for loops?
 # TODO: refactor interpreter.interpret_tokens
-# TODO: allow lists with spaces?
 # TODO: add delete button to fnwrtr
 # TODO: make stack label grow (but leave it as a label not a listwidget)
 # TODO: fnwrtr fix stupid combobox icon
@@ -31,7 +30,7 @@ if __name__ == "__main__":
 # TODO: conversions -- dtr(deg to rad), rtd(rad to deg), ctpd(cartesian to polar), ctsd(cartesian to spherical),
 # TODO:                ctcd(cartesian to cylindrical) and other way for all as well as xxxr for radians.
 # TODO: Make matrw rows and cols scale to fit in window until a certain point at which scroll is enabled?
-# TODO: make the docs
+# TODO: make the docs - note: no spaces in lists if list is arg to fn
 # TODO: more stuff in general
 # TODO: Make log give basic useful information other than errors
 # TODO: make quadrature work, implement secant root finding

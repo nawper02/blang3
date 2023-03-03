@@ -66,6 +66,7 @@ class Parser:
                 inputs[index] = f"'{inp}'"
             elif type(inp) in (list, np.ndarray):
                 inputs[index] = "[" + ",".join([str(item) for item in inp]) + "]"
+                # I dont like representing values as strings because of precision but I can't think of a better way to do it
             else:
                 inputs[index] = str(inp)
 
@@ -93,19 +94,19 @@ class Parser:
         start = 0
         result = ""
         while True:
-            open_paren = string.find(left_char, start)
-            if open_paren == -1:
+            open_char = string.find(left_char, start)
+            if open_char == -1:
                 result += string[start:]
                 break
-            result += string[start:open_paren + 1]
-            close_paren = string.find(right_char, open_paren)
-            if close_paren == -1:
+            result += string[start:open_char + 1]
+            close_char = string.find(right_char, open_char)
+            if close_char == -1:
                 break
-            inside_paren = string[open_paren + 1:close_paren]
+            inside_paren = string[open_char + 1:close_char]
             for var, val in variables.items():
                 inside_paren = inside_paren.replace(var, val)
             result += inside_paren + right_char
-            start = close_paren + 1
+            start = close_char + 1
         return result
 
     @staticmethod

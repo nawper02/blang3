@@ -147,6 +147,9 @@ class CommandHandler:
             case "NORM":
                 self.norm(args)
 
+            case "MAG":
+                self.mag(args)
+
             case "CROSS":
                 self.cross(args)
 
@@ -478,6 +481,13 @@ class CommandHandler:
         try:
             x = self.stack.popval()
             self.stack_handler.handle_token(x / np.linalg.norm(x))
+        except Exception as e:
+            self.data.log.append(str(e))
+
+    def mag(self, args):
+        try:
+            x = self.stack.popval()
+            self.stack_handler.handle_token(np.linalg.norm(x))
         except Exception as e:
             self.data.log.append(str(e))
 
@@ -828,7 +838,7 @@ class CommandHandler:
         try:
             name = args[0]
             index = int(args[1])
-            value = self.stack.stack_list[index].value
+            value = self.stack.stack_list[-index].value
             self.data.define_var(name, value)
         except Exception as e:
             self.data.log.append(str(e))

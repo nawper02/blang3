@@ -1,12 +1,14 @@
 from PyQt6 import QtWidgets, uic
 from PyQt6.QtGui import QKeySequence, QShortcut
+from PyQt6.QtCore import Qt, QEvent
 from stack_object import StackObject
+from variable_name_prompt import VariableNamePrompt
 
 
 class Visualizer(QtWidgets.QMainWindow):
     def __init__(self, blang, *args):
         super(Visualizer, self).__init__()
-        uic.loadUi('/Users/kinblandford/PycharmProjects/blang/blang2_ui.ui', self)
+        uic.loadUi('/Users/kinblandford/PycharmProjects/blang/blang2_prototype_ui.ui', self)
         downarrow_icon_path = "/Users/kinblandford/PycharmProjects/blang/downarrow.png"
 
         # set stuff up
@@ -66,10 +68,12 @@ class Visualizer(QtWidgets.QMainWindow):
         self.matrw_done_button = self.findChild(QtWidgets.QPushButton, 'matrw_done_button')
         self.matrw_tablewidget = self.findChild(QtWidgets.QTableWidget, 'matrw_tablewidget')
 
-        self.stack_label = self.findChild(QtWidgets.QLabel, 'stack_label')
+        self.stack_listwidget = self.findChild(QtWidgets.QListWidget, 'stack_listwidget')
 
         # connect functionality
         self.input.returnPressed.connect(self.handle_input)
+        self.stack_listwidget.itemDoubleClicked.connect(self.handle_stack_listwidget_double_clicked)
+        self.stack_listwidget.installEventFilter(self)
 
         self.varw_done_button.clicked.connect(self.handle_varw_done_button)
         self.varw_done_button_2.clicked.connect(self.handle_varw_done_button_2)
@@ -129,13 +133,32 @@ class Visualizer(QtWidgets.QMainWindow):
         self.stack_get_0_shortcut = QShortcut(QKeySequence("0"), self)
         self.stack_get_0_shortcut.activated.connect(self.handle_stack_get_0_shortcut)
 
-
         # set up tablewidget
         self.matrw_tablewidget.setColumnCount(self.blang.data.matrw_cols)
         self.matrw_tablewidget.setRowCount(self.blang.data.matrw_rows)
 
+        # initialize variable name prompt
+        self.prompt = None
+
         # set initial labels
         self.update_all()
+
+    def eventFilter(self, source, event):
+        if source is self.stack_listwidget and event.type() == event.Type.ContextMenu:
+            menu = QtWidgets.QMenu()
+            menu.addAction('Save as Variable')
+
+            if menu.exec(event.globalPos()):
+                item = source.itemAt(event.pos())
+                try:
+                    index = int(item.text().split("\t")[0].strip(":"))
+                    stack_object = self.blang.interpreter.stack_handler.stack.get(index + 1)
+
+                    self.prompt = VariableNamePrompt(self, stack_object)
+                except AttributeError:
+                    pass
+            return True #indent?
+        return super().eventFilter(source, event)
 
     def handle_input(self):
         s = self.input.text()
@@ -264,6 +287,15 @@ class Visualizer(QtWidgets.QMainWindow):
         except AttributeError:
             pass
 
+    def handle_stack_listwidget_double_clicked(self):
+        try:
+            index = int(self.stack_listwidget.currentItem().text().split("\t")[0].strip(":"))
+            stack_object = self.blang.interpreter.stack_handler.stack.get(index + 1)
+            self.blang.interpreter.stack_handler.stack.auto_push(stack_object)
+            self.update_all()
+        except AttributeError:
+            pass
+
     def handle_varw_delete_button(self):
         try:
             item = self.varw_current_vars_list.currentItem().text()
@@ -331,7 +363,11 @@ class Visualizer(QtWidgets.QMainWindow):
         self.fnwrtr_current_functions_tree.insertTopLevelItems(0, items)
 
     def update_stack(self):
-        self.stack_label.setText(self.blang.stack.get_full_stack_string())
+        #self.stack_label.setText(self.blang.stack.get_full_stack_string())
+        self.stack_listwidget.clear()
+        stack_listwidget_items = self.blang.stack.get_stack_listwidget_items()
+        for item in stack_listwidget_items:
+            self.stack_listwidget.addItem(item)
 
     def update_matrw(self):
         self.matrw_tablewidget.clear()

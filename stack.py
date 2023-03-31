@@ -20,6 +20,12 @@ class Stack:
         except Exception as e:
             self.data.log.append(str(e))
 
+    def get(self, index):
+        try:
+            return self.stack_list[-index]
+        except Exception as e:
+            self.data.log.append(str(e))
+
     def pop(self):
         try:
             return self.stack_list.pop()
@@ -52,6 +58,22 @@ class Stack:
 
     def paste(self):
         self.stack_list.append(self.clipboard)
+
+    def get_stack_listwidget_items(self):
+        #return [str(x) for x in self.stack_list]
+        items = []
+        for i in range(19, 0, -1):
+            if i < 11:
+                if i > len(self.stack_list):
+                    items.append(f" {i - 1}:\t")
+                else:
+                    items.append(f" {i - 1}:\t {str(self.stack_list[-i])}")
+            else:
+                if i > len(self.stack_list):
+                    items.append(f"{i - 1}:\t")
+                else:
+                    items.append(f"{i - 1}:\t {str(self.stack_list[-i])}")
+        return items
 
     def get_full_stack_string(self):
         stack_string = ""

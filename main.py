@@ -12,10 +12,22 @@ if __name__ == "__main__":
     main()
 
 
-# TODO: Catch up to old version in misc features -- units (no stupid stuff)
-# TODO: fnwrtr control flow -- loops -- more prefixes? maybe prefixes for loops?
+# TODO: UNITS
+# TODO: fix VVV
+#   .iseq(a b)
+#   .teq(a b)
+#   t.push('trueab')
+#   f.push('falseab')
+#           --> f2.0lse
+# TODO: fnwrtr control flow -- loops -- more prefixes? maybe prefixes for loops? prefix entire lines (just put char on each token automatically)
+# TODO: finish listwidget stack -- add right click to save var. make index out of range error not show up in log and not push none
+#       also reimplement variable name prompt to be a dialog for better implementation
+#       and fix TypeError: __str__ returned non-string (type NoneType) when calling variables saved through dialog
+#       also make it pop up in a better location?
+# TODO: make ui paths automatic so it doesnt only work for me
+# TODO: right click variables to delete them
 # TODO: refactor interpreter.interpret_tokens, refactor parser is_value and get_value
-# TODO: add delete button to fnwrtr
+# TODO: add delete button to fnwrtr or make right click delete
 # TODO: make stack label grow (but leave it as a label not a listwidget)
 # TODO: fnwrtr fix stupid combobox icon
 # TODO: fnwrtr Stop everything from collapsing on update (its because of clear())
@@ -24,7 +36,7 @@ if __name__ == "__main__":
 # TODO: Make macro label a function browser where you can expand/open and edit functions
 # TODO: Make var label display matrices correctly
 # TODO: Fix growing spaces in list (.sq repeat on list make spaces grow)
-# TODO: Make data load/save from a file -- https://pyinstaller.org/en/stable/spec-files.html#using-spec-files
+# TODO: Make data load/save from a file (and save on close) -- https://pyinstaller.org/en/stable/spec-files.html#using-spec-files
 # TODO: Update reserved keywords
 # TODO: make a unit tab where you can click them and they get put on current items? similar structure to fnwrtr fns
 # TODO: make transpose work on single row matrices

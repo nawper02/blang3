@@ -9,8 +9,6 @@ class Parser:
         self.stack = stack
         self.data = data
 
-
-
     # Method to turn string input into list of usable tokens
     # Doesn't split up things we don't want to split up, like lists strings or args
     @staticmethod
@@ -82,10 +80,10 @@ class Parser:
             if token in f.args:  # If token is an arg
                 tokens[index] = variables_dict[token]  # Replace token with inp
             elif self.is_cmd(token):  # If token is a command
-                tokens[index] = self.replace_variables_in_block(token, variables_dict, left_char="(", right_char=")") # Replace variables in parentheses with inputs
+                tokens[index] = self.replace_variables_in_block_2(token, variables_dict, left_char="(", right_char=")") # Replace variables in parentheses with inputs
 
             elif self.is_list(token): # If token is a list
-                tokens[index] = self.replace_variables_in_block(token, variables_dict, left_char="[", right_char="]")
+                tokens[index] = self.replace_variables_in_block_2(token, variables_dict, left_char="[", right_char="]")
 
         return tokens
 
@@ -108,6 +106,18 @@ class Parser:
             result += inside_paren + right_char
             start = close_char + 1
         return result
+
+    # Rewriting this method to make it not look at individual characters because it was replacing variables in strings
+    @staticmethod
+    def replace_variables_in_block_2(string, variables, left_char="(", right_char=")"):
+        block_matches = re.findall(rf"{left_char}.*?{right_char}", string)
+        for match in block_matches:
+            inside = match.strip(left_char).strip(right_char)
+            for var, val in variables.items():
+                inside = inside.replace(var, val)
+            string = string.replace(match, left_char + inside + right_char)
+        return string
+
 
     @staticmethod
     def find_outermost_block(s: str, left_char: str, right_char: str):

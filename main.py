@@ -20,10 +20,7 @@ if __name__ == "__main__":
 #   f.push('falseab')
 #           --> f2.0lse
 # TODO: fnwrtr control flow -- loops -- more prefixes? maybe prefixes for loops? prefix entire lines (just put char on each token automatically)
-# TODO: finish listwidget stack -- add right click to save var. make index out of range error not show up in log and not push none
-#       also reimplement variable name prompt to be a dialog for better implementation
-#       and fix TypeError: __str__ returned non-string (type NoneType) when calling variables saved through dialog
-#       also make it pop up in a better location?
+# TODO: make variable list have folders maybe
 # TODO: make ui paths automatic so it doesnt only work for me
 # TODO: right click variables to delete them
 # TODO: refactor interpreter.interpret_tokens, refactor parser is_value and get_value
@@ -31,7 +28,7 @@ if __name__ == "__main__":
 # TODO: make stack label grow (but leave it as a label not a listwidget)
 # TODO: fnwrtr fix stupid combobox icon
 # TODO: fnwrtr Stop everything from collapsing on update (its because of clear())
-# TODO: Add stats functionality -- distributions, etc
+# TODO: Add stats functionality -- distributions, etc, regressions for sure (lists)
 # TODO: Add units functionality using new strings functionality
 # TODO: Make macro label a function browser where you can expand/open and edit functions
 # TODO: Make var label display matrices correctly

@@ -20,25 +20,31 @@ class Data:
         self.pvars = {}
 
         hyp = BFunction(".hyp(a b)\na .sq b .sq .add .sqrt")
-        prnt = BFunction(".print(a)\na")
+        push = BFunction(".push(a)\na")
         vdiv = BFunction(".vdiv(vin r1 r2)\nr1 r2 r1 .add .div vin .x")
+        db = BFunction(".db(g)\n10 g .lby 20 .x")
+        dbi = BFunction(".dbi(d)\nd 20 .div 10 .xty")
         self.bfunctions = \
             {
             "Misc":
                 {
                     f"{hyp.name}": hyp,
-                    f"{prnt.name}": prnt
+                    f"{push.name}": push
                 },
             "ECE":
-                {f"{vdiv.name}": vdiv
+                {f"{vdiv.name}": vdiv,
+                 f"{db.name}": db,
+                 f"{dbi.name}": dbi
                  }
             }
 
         self.reserved_words = \
             ["", "POP", "ADD", "SUB", "X", "DIV", "SQRT", "SQ", "LN", "LBY", "SIN", "SIND", "COS", "COSD", "TAN",
-                "TAND", "ASIN", "ASIND", "ACOS", "ACOSD", "ATAN", "ATAND", "CHS", "REC", "EXP", "HYP", "XRY", "XTY",
-                "DOT", "NORM", "CROSS", "SWAP", "DUP", "DET", "INV", "TRANS", "SOLVE", "SUM", "C", "V", "CLEAR",
-                "VAR", "HELP"]
+            "TAND", "ASIN", "ASIND", "ACOS", "ACOSD", "ATAN", "ATAND", "CHS", "REC", "EXP", "XRY", "XTY",
+            "DOT", "NORM", "CROSS", "SWAP", "UP", "DOWN", "DUP", "GET", "DET", "INV", "TRANS", "SOLVE",
+            "SUM", "PROD", "INT", "DIF", "ROOTS", "C", "V", "TEQ", "TNE", "TGT", "TLT", "TGE", "TLE",
+            "CLEAR", "RETURN", "VAR", "VARIND", "PVAR", "PVARIND", "GETPVAR", "RM", "CLEARVARS", "CLEARPVARS",
+            "CLEARBFUNCTIONS", "CLEARLOG", "CLEARALLDATA", "IOTA", "UNPACK", "PACK", "REVERSE", "EYE", "HELP"]
 
         self.matrw_rows = 3
         self.matrw_cols = 3

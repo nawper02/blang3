@@ -6,7 +6,7 @@ from stack_object import StackObject
 class Visualizer(QtWidgets.QMainWindow):
     def __init__(self, blang, *args):
         super(Visualizer, self).__init__()
-        uic.loadUi('/Users/kinblandford/PycharmProjects/blang/blang2_ui.ui', self)
+        uic.loadUi('/Users/kinblandford/PycharmProjects/blang/blang2_prototype_ui.ui', self)
         downarrow_icon_path = "/Users/kinblandford/PycharmProjects/blang/downarrow.png"
 
         # set stuff up
@@ -45,14 +45,8 @@ class Visualizer(QtWidgets.QMainWindow):
         self.input = self.findChild(QtWidgets.QLineEdit, 'input')
         self.log_scrollarea_label = self.findChild(QtWidgets.QLabel, 'log_scrollarea_label')
 
-        self.varw_done_button = self.findChild(QtWidgets.QPushButton, 'varw_done_button')
-        self.varw_done_button_2 = self.findChild(QtWidgets.QPushButton, 'varw_done_button_2')
         self.varw_delete_button = self.findChild(QtWidgets.QPushButton, 'varw_delete_button')
         self.varw_current_vars_list = self.findChild(QtWidgets.QListWidget, 'varw_listwidget')
-        self.varw_name_lineedit = self.findChild(QtWidgets.QLineEdit, 'varw_name_lineedit')
-        self.varw_name_lineedit_2 = self.findChild(QtWidgets.QLineEdit, 'varw_name_lineedit_2')
-        self.varw_value_lineedit = self.findChild(QtWidgets.QLineEdit, 'varw_value_lineedit')
-        self.varw_index_lineedit = self.findChild(QtWidgets.QLineEdit, 'varw_index_lineedit')
 
         self.fnwrtr_current_functions_tree = self.findChild(QtWidgets.QTreeWidget, 'fnwrtr_tree')
         self.fnwrtr_done_button = self.findChild(QtWidgets.QPushButton, 'fnwrtr_done_button')
@@ -66,13 +60,13 @@ class Visualizer(QtWidgets.QMainWindow):
         self.matrw_done_button = self.findChild(QtWidgets.QPushButton, 'matrw_done_button')
         self.matrw_tablewidget = self.findChild(QtWidgets.QTableWidget, 'matrw_tablewidget')
 
-        self.stack_label = self.findChild(QtWidgets.QLabel, 'stack_label')
+        self.stack_listwidget = self.findChild(QtWidgets.QListWidget, 'stack_listwidget')
 
         # connect functionality
         self.input.returnPressed.connect(self.handle_input)
+        self.stack_listwidget.itemDoubleClicked.connect(self.handle_stack_listwidget_double_clicked)
+        self.stack_listwidget.installEventFilter(self)
 
-        self.varw_done_button.clicked.connect(self.handle_varw_done_button)
-        self.varw_done_button_2.clicked.connect(self.handle_varw_done_button_2)
         self.varw_delete_button.clicked.connect(self.handle_varw_delete_button)
         self.varw_current_vars_list.itemDoubleClicked.connect(self.handle_varw_current_vars_list_double_clicked)
 
@@ -129,13 +123,39 @@ class Visualizer(QtWidgets.QMainWindow):
         self.stack_get_0_shortcut = QShortcut(QKeySequence("0"), self)
         self.stack_get_0_shortcut.activated.connect(self.handle_stack_get_0_shortcut)
 
-
         # set up tablewidget
         self.matrw_tablewidget.setColumnCount(self.blang.data.matrw_cols)
         self.matrw_tablewidget.setRowCount(self.blang.data.matrw_rows)
 
+        # initialize variable name prompt
+        self.prompt = None
+
         # set initial labels
         self.update_all()
+
+    def eventFilter(self, source, event):
+        if source is self.stack_listwidget and event.type() == event.Type.ContextMenu:
+            menu = QtWidgets.QMenu()
+            menu.addAction('Save as Variable')
+
+            if menu.exec(event.globalPos()):
+                item = source.itemAt(event.pos())
+                try:
+                    index = int(item.text().split("\t")[0].strip(":"))
+                    stack_object = self.blang.interpreter.stack_handler.stack.get(index + 1)
+                    value = stack_object.value
+
+                    name, naming_suceeded = QtWidgets.QInputDialog.getText(self, '', 'Variable Name:')
+
+                    if naming_suceeded and value is not None:
+                        self.blang.data.define_var(name, value)
+
+                    self.update_all()
+
+                except AttributeError:
+                    pass
+            return True #indent?
+        return super().eventFilter(source, event)
 
     def handle_input(self):
         s = self.input.text()
@@ -227,25 +247,6 @@ class Visualizer(QtWidgets.QMainWindow):
         self.blang.interpreter.interpret_tokens(self.blang.parser.tokenize('.get(0)'))
         self.update_all()
 
-
-    def handle_varw_done_button(self):
-        name = self.varw_name_lineedit.text()
-        value = self.blang.parser.get_value(self.varw_value_lineedit.text(), allow_string_value=True)
-        if name not in (None, '') and value not in (None, ''):
-            self.varw_name_lineedit.clear()
-            self.varw_value_lineedit.clear()
-            self.blang.interpreter.command_handler.define_var([name, value])
-            self.update_all()
-
-    def handle_varw_done_button_2(self):
-        name = self.varw_name_lineedit_2.text()
-        index = self.varw_index_lineedit.text()
-        if name not in (None, '') and index not in (None, ''):
-            self.blang.interpreter.command_handler.define_var_from_index([name, index])
-            self.varw_index_lineedit.clear()
-            self.varw_name_lineedit_2.clear()
-            self.update_all()
-
     def handle_varw_current_vars_list_double_clicked(self):
         try:
             item = self.varw_current_vars_list.currentItem().text()
@@ -260,6 +261,15 @@ class Visualizer(QtWidgets.QMainWindow):
             item = self.fnwrtr_current_functions_tree.currentItem().text(0)
             name = item.split("(")[0].strip(" .")
             self.fnwrtr_textedit.setPlainText(self.blang.data.get_full_bfunction_string(name))
+            self.update_all()
+        except AttributeError:
+            pass
+
+    def handle_stack_listwidget_double_clicked(self):
+        try:
+            index = int(self.stack_listwidget.currentItem().text().split("\t")[0].strip(":"))
+            stack_object = self.blang.interpreter.stack_handler.stack.get(index + 1)
+            self.blang.interpreter.stack_handler.stack.auto_push(stack_object)
             self.update_all()
         except AttributeError:
             pass
@@ -331,7 +341,11 @@ class Visualizer(QtWidgets.QMainWindow):
         self.fnwrtr_current_functions_tree.insertTopLevelItems(0, items)
 
     def update_stack(self):
-        self.stack_label.setText(self.blang.stack.get_full_stack_string())
+        #self.stack_label.setText(self.blang.stack.get_full_stack_string())
+        self.stack_listwidget.clear()
+        stack_listwidget_items = self.blang.stack.get_stack_listwidget_items()
+        for item in stack_listwidget_items:
+            self.stack_listwidget.addItem(item)
 
     def update_matrw(self):
         self.matrw_tablewidget.clear()

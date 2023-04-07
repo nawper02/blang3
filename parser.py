@@ -247,12 +247,19 @@ class Parser:
         else:
             return None
 
-    @staticmethod
-    def strip_prefix(token):
+    def strip_prefix(self, token):
         if type(token) is not str:
             return token
-        if token[0] in "tTfF":
+        if self.is_prefixed_token(token):
             return token[1:]
         else:
             return token
 
+    @staticmethod
+    def is_prefixed_token(token):
+        if len(token) < 2 or type(token) is not str:
+            return False
+        elif token[0] in "tTfF" and token[1] == '.':
+            return True
+        else:
+            return False

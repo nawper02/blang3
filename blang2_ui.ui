@@ -28,6 +28,11 @@
     <height>600</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <family>Andale Mono</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -40,6 +45,11 @@
       <width>471</width>
       <height>331</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Andale Mono</family>
+     </font>
     </property>
     <property name="title">
      <string/>
@@ -67,14 +77,17 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QLabel" name="stack_label">
+        <widget class="QListWidget" name="stack_listwidget">
          <property name="font">
           <font>
-           <family>.AppleSystemUIFontMonospaced</family>
+           <family>Andale Mono</family>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
           </font>
          </property>
-         <property name="text">
-          <string/>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
          </property>
         </widget>
        </item>
@@ -93,10 +106,10 @@
     </property>
     <property name="font">
      <font>
-      <family>.AppleSystemUIFontMonospaced</family>
-      <weight>75</weight>
+      <family>Andale Mono</family>
+      <weight>50</weight>
       <italic>false</italic>
-      <bold>true</bold>
+      <bold>false</bold>
      </font>
     </property>
    </widget>
@@ -111,7 +124,7 @@
     </property>
     <property name="font">
      <font>
-      <family>.AppleSystemUIFontMonospaced</family>
+      <family>Andale Mono</family>
      </font>
     </property>
     <property name="text">
@@ -129,9 +142,9 @@
     </property>
     <property name="font">
      <font>
-      <family>.AppleSystemUIFontMonospaced</family>
+      <family>Andale Mono</family>
       <weight>50</weight>
-      <italic>true</italic>
+      <italic>false</italic>
       <bold>false</bold>
      </font>
     </property>
@@ -142,7 +155,7 @@
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="iconSize">
      <size>
@@ -174,7 +187,7 @@
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>321</width>
+         <width>651</width>
          <height>471</height>
         </rect>
        </property>
@@ -186,231 +199,21 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>319</width>
+          <width>649</width>
           <height>469</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_9">
          <item>
-          <widget class="QListWidget" name="varw_listwidget"/>
+          <widget class="QListWidget" name="varw_listwidget">
+           <property name="font">
+            <font>
+             <family>Andale Mono</family>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="varw_tools_groupbox">
-       <property name="geometry">
-        <rect>
-         <x>340</x>
-         <y>10</y>
-         <width>321</width>
-         <height>121</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string/>
-       </property>
-       <widget class="QLineEdit" name="varw_value_lineedit">
-        <property name="geometry">
-         <rect>
-          <x>70</x>
-          <y>50</y>
-          <width>241</width>
-          <height>21</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="varw_name_label">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>.AppleSystemUIFontMonospaced</family>
-          <weight>75</weight>
-          <italic>true</italic>
-          <bold>true</bold>
-          <underline>false</underline>
-          <strikeout>false</strikeout>
-          <kerning>true</kerning>
-         </font>
-        </property>
-        <property name="text">
-         <string>Name:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="varw_name_lineedit">
-        <property name="geometry">
-         <rect>
-          <x>70</x>
-          <y>10</y>
-          <width>241</width>
-          <height>21</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="varw_value_label">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>50</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>.AppleSystemUIFontMonospaced</family>
-          <weight>75</weight>
-          <italic>true</italic>
-          <bold>true</bold>
-          <underline>false</underline>
-          <strikeout>false</strikeout>
-          <kerning>true</kerning>
-         </font>
-        </property>
-        <property name="text">
-         <string>Value:</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="varw_done_button">
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>80</y>
-          <width>51</width>
-          <height>32</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <italic>true</italic>
-         </font>
-        </property>
-        <property name="text">
-         <string>✓</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QPushButton" name="varw_delete_button">
-       <property name="geometry">
-        <rect>
-         <x>340</x>
-         <y>450</y>
-         <width>51</width>
-         <height>32</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <italic>true</italic>
-        </font>
-       </property>
-       <property name="text">
-        <string>✕</string>
-       </property>
-      </widget>
-      <widget class="QGroupBox" name="varw_tools_groupbox_2">
-       <property name="geometry">
-        <rect>
-         <x>340</x>
-         <y>140</y>
-         <width>321</width>
-         <height>121</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string/>
-       </property>
-       <widget class="QLabel" name="varw_name_label_2">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>50</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>.AppleSystemUIFontMonospaced</family>
-          <weight>75</weight>
-          <italic>true</italic>
-          <bold>true</bold>
-          <underline>false</underline>
-          <strikeout>false</strikeout>
-          <kerning>true</kerning>
-         </font>
-        </property>
-        <property name="text">
-         <string>Index:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="varw_index_lineedit">
-        <property name="geometry">
-         <rect>
-          <x>70</x>
-          <y>50</y>
-          <width>241</width>
-          <height>21</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="varw_done_button_2">
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>80</y>
-          <width>51</width>
-          <height>32</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <italic>true</italic>
-         </font>
-        </property>
-        <property name="text">
-         <string>✓</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="varw_name_lineedit_2">
-        <property name="geometry">
-         <rect>
-          <x>70</x>
-          <y>10</y>
-          <width>241</width>
-          <height>21</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="varw_name_label_3">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>.AppleSystemUIFontMonospaced</family>
-          <weight>75</weight>
-          <italic>true</italic>
-          <bold>true</bold>
-          <underline>false</underline>
-          <strikeout>false</strikeout>
-          <kerning>true</kerning>
-         </font>
-        </property>
-        <property name="text">
-         <string>Name:</string>
-        </property>
        </widget>
       </widget>
      </widget>
@@ -440,6 +243,12 @@
          <height>421</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>Andale Mono</family>
+         <italic>false</italic>
+        </font>
+       </property>
        <property name="widgetResizable">
         <bool>true</bool>
        </property>
@@ -454,7 +263,14 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <widget class="QPlainTextEdit" name="fnwrtr_textedit"/>
+          <widget class="QPlainTextEdit" name="fnwrtr_textedit">
+           <property name="font">
+            <font>
+             <family>Andale Mono</family>
+             <italic>false</italic>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -467,6 +283,12 @@
          <width>281</width>
          <height>421</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Andale Mono</family>
+         <italic>false</italic>
+        </font>
        </property>
        <property name="widgetResizable">
         <bool>true</bool>
@@ -494,15 +316,9 @@
              <family>Andale Mono</family>
             </font>
            </property>
-           <property name="contextMenuPolicy">
-            <enum>Qt::DefaultContextMenu</enum>
-           </property>
-           <property name="headerHidden">
-            <bool>true</bool>
-           </property>
            <column>
             <property name="text">
-             <string> </string>
+             <string>BFunctions</string>
             </property>
            </column>
           </widget>
@@ -530,6 +346,12 @@
           <width>101</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Andale Mono</family>
+          <italic>false</italic>
+         </font>
         </property>
        </widget>
        <widget class="QPushButton" name="fnwrtr_new_folder_done_button">
@@ -561,10 +383,10 @@
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFontMonospaced</family>
-          <weight>75</weight>
-          <italic>true</italic>
-          <bold>true</bold>
+          <family>Andale Mono</family>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
           <underline>false</underline>
           <strikeout>false</strikeout>
           <kerning>true</kerning>
@@ -598,10 +420,10 @@
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFontMonospaced</family>
-          <weight>75</weight>
-          <italic>true</italic>
-          <bold>true</bold>
+          <family>Andale Mono</family>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
           <underline>false</underline>
           <strikeout>false</strikeout>
           <kerning>true</kerning>
@@ -620,14 +442,11 @@
           <height>31</height>
          </rect>
         </property>
-        <property name="autoFillBackground">
-         <bool>false</bool>
-        </property>
-        <property name="editable">
-         <bool>false</bool>
-        </property>
-        <property name="frame">
-         <bool>false</bool>
+        <property name="font">
+         <font>
+          <family>Andale Mono</family>
+          <italic>false</italic>
+         </font>
         </property>
        </widget>
        <widget class="QPushButton" name="fnwrtr_done_button">
@@ -664,6 +483,14 @@
         <height>491</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Andale Mono</family>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
+       </font>
+      </property>
       <property name="title">
        <string/>
       </property>
@@ -690,7 +517,7 @@
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFontMonospaced</family>
+          <family>Andale Mono</family>
          </font>
         </property>
         <property name="frameShape">
@@ -743,6 +570,12 @@
           <height>24</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>Andale Mono</family>
+          <italic>false</italic>
+         </font>
+        </property>
         <property name="minimum">
          <number>1</number>
         </property>
@@ -764,10 +597,10 @@
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFontMonospaced</family>
-          <weight>75</weight>
-          <italic>true</italic>
-          <bold>true</bold>
+          <family>Andale Mono</family>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
           <underline>false</underline>
           <strikeout>false</strikeout>
           <kerning>true</kerning>
@@ -785,6 +618,14 @@
           <width>48</width>
           <height>24</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Andale Mono</family>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
         </property>
         <property name="minimum">
          <number>1</number>
@@ -807,10 +648,10 @@
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFontMonospaced</family>
-          <weight>75</weight>
-          <italic>true</italic>
-          <bold>true</bold>
+          <family>Andale Mono</family>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
           <underline>false</underline>
           <strikeout>false</strikeout>
           <kerning>true</kerning>
@@ -832,6 +673,11 @@
       <width>471</width>
       <height>151</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Andale Mono</family>
+     </font>
     </property>
     <property name="title">
      <string/>
@@ -862,7 +708,7 @@
         <widget class="QLabel" name="log_scrollarea_label">
          <property name="font">
           <font>
-           <family>.AppleSystemUIFontMonospaced</family>
+           <family>Andale Mono</family>
           </font>
          </property>
          <property name="text">

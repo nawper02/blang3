@@ -45,7 +45,6 @@ class Visualizer(QtWidgets.QMainWindow):
         self.input = self.findChild(QtWidgets.QLineEdit, 'input')
         self.log_scrollarea_label = self.findChild(QtWidgets.QLabel, 'log_scrollarea_label')
 
-        self.varw_delete_button = self.findChild(QtWidgets.QPushButton, 'varw_delete_button')
         self.varw_current_vars_list = self.findChild(QtWidgets.QListWidget, 'varw_listwidget')
 
         self.fnwrtr_current_functions_tree = self.findChild(QtWidgets.QTreeWidget, 'fnwrtr_tree')
@@ -67,8 +66,8 @@ class Visualizer(QtWidgets.QMainWindow):
         self.stack_listwidget.itemDoubleClicked.connect(self.handle_stack_listwidget_double_clicked)
         self.stack_listwidget.installEventFilter(self)
 
-        self.varw_delete_button.clicked.connect(self.handle_varw_delete_button)
         self.varw_current_vars_list.itemDoubleClicked.connect(self.handle_varw_current_vars_list_double_clicked)
+        self.varw_current_vars_list.installEventFilter(self)
 
         self.fnwrtr_done_button.clicked.connect(self.handle_fnwrtr_done_button)
         self.fnwrtr_new_folder_done_button.clicked.connect(self.handle_fnwrtr_new_folder_done_button)
@@ -154,7 +153,30 @@ class Visualizer(QtWidgets.QMainWindow):
 
                 except AttributeError:
                     pass
-            return True #indent?
+            #return True #indent? wtf does this even do?
+        elif source is self.varw_current_vars_list and event.type() == event.Type.ContextMenu:
+            menu = QtWidgets.QMenu()
+            menu.addAction('Delete Variable')
+            menu.addAction('Rename Variable')
+
+            # TODO DOESNT WORK YET
+
+            selected_action = menu.exec(event.globalPos())
+            if selected_action is not None:
+                item = source.itemAt(event.pos())
+                try:
+                    name = item.text().split("=")[0].strip(" ")
+                    if selected_action.text() == 'Delete Variable':
+                        self.blang.data.rm("vars", name)
+                    elif selected_action.text() == 'Rename Variable':
+                        new_name, naming_succeeded = QtWidgets.QInputDialog.getText(self, '', 'New Variable Name:')
+                        if naming_succeeded:
+                            self.blang.data.rename_var(name, new_name)
+                    self.update_all()
+
+                except AttributeError:
+                    pass
+
         return super().eventFilter(source, event)
 
     def handle_input(self):
@@ -270,15 +292,6 @@ class Visualizer(QtWidgets.QMainWindow):
             index = int(self.stack_listwidget.currentItem().text().split("\t")[0].strip(":"))
             stack_object = self.blang.interpreter.stack_handler.stack.get(index + 1)
             self.blang.interpreter.stack_handler.stack.auto_push(stack_object)
-            self.update_all()
-        except AttributeError:
-            pass
-
-    def handle_varw_delete_button(self):
-        try:
-            item = self.varw_current_vars_list.currentItem().text()
-            name = item.split("=")[0].strip(" ")
-            self.blang.data.rm('vars', name)
             self.update_all()
         except AttributeError:
             pass

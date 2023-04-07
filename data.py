@@ -132,6 +132,9 @@ class Data:
     def rm(self, data_type, name):
         self.dictionaries[data_type].pop(name)
 
+    def rename_var(self, old_name, new_name):
+        self.vars[new_name] = self.vars.pop(old_name)
+
     def clear_pvars(self):
         self.pvars.clear()
 

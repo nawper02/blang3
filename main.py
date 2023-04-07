@@ -19,10 +19,11 @@ if __name__ == "__main__":
 #   t.push('trueab')
 #   f.push('falseab')
 #           --> f2.0lse
+# TODO: add imaginary number type and operations, quadratic formula
 # TODO: fnwrtr control flow -- loops -- more prefixes? maybe prefixes for loops? prefix entire lines (just put char on each token automatically)
 # TODO: make variable list have folders maybe
+# TODO: add grapher function and popup window
 # TODO: make ui paths automatic so it doesnt only work for me
-# TODO: right click variables to delete them
 # TODO: refactor interpreter.interpret_tokens, refactor parser is_value and get_value
 # TODO: add delete button to fnwrtr or make right click delete
 # TODO: make stack label grow (but leave it as a label not a listwidget)
@@ -30,7 +31,6 @@ if __name__ == "__main__":
 # TODO: fnwrtr Stop everything from collapsing on update (its because of clear())
 # TODO: Add stats functionality -- distributions, etc, regressions for sure (lists)
 # TODO: Add units functionality using new strings functionality
-# TODO: Make macro label a function browser where you can expand/open and edit functions
 # TODO: Make var label display matrices correctly
 # TODO: Fix growing spaces in list (.sq repeat on list make spaces grow)
 # TODO: Make data load/save from a file (and save on close) -- https://pyinstaller.org/en/stable/spec-files.html#using-spec-files

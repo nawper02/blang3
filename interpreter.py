@@ -29,13 +29,13 @@ class Interpreter:
             if type(value) != str:
                 self.stack_handler.handle_token(value)
 
-            else:
+            elif self.parser.is_prefixed_token(value):
                 if (value[0].upper(), self.run_state) in [('T', True), ('F', False)]:
                     self.stack_handler.handle_token(value)
                 elif (value[0].upper(), self.run_state) in [('T', False), ('F', True)]:
                     pass
-                else:
-                    self.stack_handler.handle_token(value)
+            else:
+                self.stack_handler.handle_token(value)
 
         except Exception as e:
             self.data.log.append(str(e))
@@ -43,10 +43,11 @@ class Interpreter:
     # this method handles regular commands and conditional commands
     def interpret_command(self, command):
         try:
-            if (command[0].upper(), self.run_state) in [('T', True), ('F', False)]:
-                self.command_handler.handle_token(command)
-            elif (command[0].upper(), self.run_state) in [('T', False), ('F', True)]:
-                pass
+            if self.parser.is_prefixed_token(command):
+                if (command[0].upper(), self.run_state) in [('T', True), ('F', False)]:
+                    self.command_handler.handle_token(command)
+                elif (command[0].upper(), self.run_state) in [('T', False), ('F', True)]:
+                    pass
             else:
                 self.command_handler.handle_token(command)
         except Exception as e:

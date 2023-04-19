@@ -75,8 +75,6 @@ class Parser:
         for line in f.pgrm_lines:
             tokens += self.tokenize(line)
 
-        print(tokens)
-
         # replace variables in block is turning everything into parenthases...
 
         # Replace tokens with inputs
@@ -85,11 +83,10 @@ class Parser:
             if token in f.args:  # If token is an arg
                 tokens[index] = variables_dict[token]  # Replace token with inp
             elif self.is_cmd(token):  # If token is a command
-                tokens[index] = self.replace_variables_in_block_3(token, variables_dict, left_char="(", right_char=")") # Replace variables in parentheses with inputs
+                tokens[index] = self.replace_variables_in_block_5(token, variables_dict, left_char="(", right_char=")") # Replace variables in parentheses with inputs
 
             elif self.is_list(token): # If token is a list
-                tokens[index] = self.replace_variables_in_block_3(token, variables_dict, left_char="[", right_char="]")
-        print(tokens)
+                tokens[index] = self.replace_variables_in_block_5(token, variables_dict, left_char="[", right_char="]")
         return tokens
 
     @staticmethod
@@ -115,36 +112,24 @@ class Parser:
     # Rewriting this method to make it not look at individual characters because it was replacing variables in strings
     @staticmethod
     def replace_variables_in_block_2(string, variables, left_char="(", right_char=")"):
-        print(f"String before replace: {string}")
         block_matches = re.findall(rf"{left_char}.*?{right_char}", string)
-        print(f"Block Matches: {block_matches}")
-        print(f"Looping...")
         for match in block_matches:
             inside = match.strip(left_char).strip(right_char)
-            print(f"Inside before replace: {inside}")
             for var, val in variables.items():
                 inside = inside.replace(var, val)
-                print(f"Inside after replace: {inside}")
             string = string.replace(match, left_char + inside + right_char)
-            print(f"String after replace: {string}")
         return string
 
     @staticmethod
     def replace_variables_in_block_3(string, variables, left_char="(", right_char=")"):
-        print(f"String before replace: {string}")
         block_matches = re.findall(
             rf"(?<!{re.escape(left_char)}){re.escape(left_char)}(?!.*?{re.escape(left_char)}.*?{re.escape(right_char)})(.*?)(?<!{re.escape(right_char)}){re.escape(right_char)}",
             string)
-        print(f"Block Matches: {block_matches}")
-        print(f"Looping...")
         for match in block_matches:
             inside = match.strip(left_char).strip(right_char)
-            print(f"Inside before replace: {inside}")
             for var, val in variables.items():
                 inside = inside.replace(var, val)
-                print(f"Inside after replace: {inside}")
             string = string.replace(match, inside)
-            print(f"String after replace: {string}")
         return string
 
     @staticmethod
@@ -161,6 +146,20 @@ class Parser:
 
         return block_pattern.sub(replace_variable, string)
 
+    @staticmethod
+    def replace_variables_in_block_5(string, variables, left_char="(", right_char=")"):
+        block_matches = re.findall(
+            rf"(?<!')(?<!{re.escape(left_char)}){re.escape(left_char)}(?!.*?{re.escape(left_char)}.*?{re.escape(right_char)})(.*?)"
+            rf"(?<!{re.escape(right_char)}){re.escape(right_char)}(?!')",
+            string)
+        for match in block_matches:
+            inside = match.strip(left_char).strip(right_char)
+            if "'" not in inside:
+                for var, val in variables.items():
+                    inside = inside.replace(var, val)
+                string = string.replace(match, inside)
+
+        return string
 
     @staticmethod
     def find_outermost_block(s: str, left_char: str, right_char: str):

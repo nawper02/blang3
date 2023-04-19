@@ -15,12 +15,6 @@ if __name__ == "__main__":
 # TODO: UNITS
 # TODO: make variable list have folders maybe
 # TODO: add delete button to fnwrtr or make right click delete
-# TODO: fix VVV
-#   .iseq(a b)
-#   .teq(a b)
-#   t.push('trueab')
-#   f.push('falseab')
-#           --> f2.0lse
 # TODO: add imaginary number type and operations, quadratic formula
 # TODO: fnwrtr control flow -- loops -- more prefixes? maybe prefixes for loops? prefix entire lines (just put char on each token automatically)
 # TODO: add grapher function and popup window

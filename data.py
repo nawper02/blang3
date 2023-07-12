@@ -52,7 +52,7 @@ class Data:
 
         today = date.today()
         init_str = today.strftime("%b-%d-%Y")
-        self.log = [f"BLANG v3.1.0 -- {init_str}"]
+        self.log = [f"BLANG v3.2.0 -- {init_str}"]
 
         self.dictionaries = {"vars": self.vars, "pvars": self.pvars, "bfunctions": self.bfunctions}
 

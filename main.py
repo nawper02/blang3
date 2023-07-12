@@ -1,6 +1,6 @@
 from blang import Blang
 
-# pyinstaller BLANG3.spec
+# pyinstaller BLANG3.spec --noconfirm
 
 
 def main():
@@ -26,7 +26,7 @@ if __name__ == "__main__":
 # TODO: Add units functionality using new strings functionality
 # TODO: Make var label display matrices correctly
 # TODO: Fix growing spaces in list (.sq repeat on list make spaces grow)
-# TODO: Make data load/save from a file (and save on close) -- https://pyinstaller.org/en/stable/spec-files.html#using-spec-files
+# TODO: Make data load/save from a file (and save on close) -- https://pyinstaller.org/en/stable/spec-files.html#using-spec-files - pickle
 # TODO: Update reserved keywords
 # TODO: make a unit tab where you can click them and they get put on current items? similar structure to fnwrtr fns
 # TODO: make transpose work on single row matrices

@@ -14,6 +14,11 @@ Install dependencies.
 ```
 pip install -r requirements.txt
 ```
+
+Change line 9 in visualier.py to reflect the correct path to your ui file (it's part of the repository that you cloned).
+
+Finally,
+
 Run main.py.
 ```
 python3 main.py

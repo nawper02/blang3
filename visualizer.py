@@ -6,7 +6,7 @@ from stack_object import StackObject
 class Visualizer(QtWidgets.QMainWindow):
     def __init__(self, blang, *args):
         super(Visualizer, self).__init__()
-        uic.loadUi('/Users/kinblandford/PycharmProjects/blang/blang2_ui.ui', self)
+        uic.loadUi('blang2_ui.ui', self)
 
         # set stuff up
         self.blang = blang
